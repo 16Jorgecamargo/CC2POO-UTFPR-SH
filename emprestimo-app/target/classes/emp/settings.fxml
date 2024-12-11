@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8.0.171" 
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="emp.controllers.SettingsController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Configurações" style="-fx-font-size: 24px;"/>
+
+    <TabPane VBox.vgrow="ALWAYS">
+    
+        <!-- Aba de Notificações -->
+        <Tab text="Notificações" closable="false">
+            <VBox spacing="10">
+                <Label text="Configurações de Notificação" style="-fx-font-weight: bold;"/>
+                
+                <CheckBox fx:id="emailNotificationCheck" text="Ativar notificações por e-mail"/>
+                <CheckBox fx:id="smsNotificationCheck" text="Ativar notificações por SMS"/>
+                <CheckBox fx:id="whatsappNotificationCheck" text="Ativar notificações por WhatsApp"/>
+                
+                <Label text="Mensagem para atraso:" style="-fx-padding: 10 0 0 0;"/>
+                <TextArea fx:id="latePaymentMsgArea" prefRowCount="3" 
+                         promptText="Mensagem para clientes com pagamento atrasado"/>
+                
+                <Label text="Mensagem para vencimento próximo:" style="-fx-padding: 10 0 0 0;"/>
+                <TextArea fx:id="dueDateMsgArea" prefRowCount="3" 
+                         promptText="Mensagem para clientes com vencimento próximo"/>
+            </VBox>
+        </Tab>
+
+        <!-- Aba de Backup -->
+        <Tab text="Backup" closable="false">
+            <VBox spacing="10">
+                <Label text="Configurações de Backup" style="-fx-font-weight: bold;"/>
+                
+                <CheckBox fx:id="autoBackupCheck" text="Ativar backup automático"/>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Frequência de backup:"/>
+                    <ComboBox fx:id="backupFrequencyCombo" prefWidth="150"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Diretório de backup:"/>
+                    <TextField fx:id="backupDirField" HBox.hgrow="ALWAYS"/>
+                    <Button text="Procurar" onAction="#handleSelectBackupDir"/>
+                </HBox>
+
+                <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+                    <Button text="Exportar Backup" onAction="#handleExportBackup"/>
+                    <Button text="Importar Backup" onAction="#handleImportBackup"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- Aba de Usuários -->
+        <Tab text="Usuários" closable="false">
+            <VBox spacing="10">
+                <Label text="Gerenciamento de Usuários" style="-fx-font-weight: bold;"/>
+                
+                <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="usernameColumn" text="Usuário" prefWidth="150"/>
+                        <TableColumn fx:id="userTypeColumn" text="Tipo" prefWidth="100"/>
+                        <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+                        <TableColumn fx:id="actionsColumn" text="Ações" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+    </TabPane>
+
+    <!-- Botões -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Salvar Configurações" onAction="#handleSaveSettings"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button text="Voltar" onAction="#handleBack"/>
+    </HBox>
+</VBox>

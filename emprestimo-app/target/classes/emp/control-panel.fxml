@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/8.0.171" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="emp.controllers.ControlPanelController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Painel de Controle" style="-fx-font-size: 24px;"/>
+
+    <!-- KPIs -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox styleClass="kpi-box" alignment="CENTER" 
+              style="-fx-padding: 15; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <Label text="Clientes Ativos" style="-fx-font-weight: bold;"/>
+            <Label fx:id="activeClientsLabel" text="0" style="-fx-font-size: 24px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-box" alignment="CENTER"
+              style="-fx-padding: 15; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <Label text="Empréstimos Ativos" style="-fx-font-weight: bold;"/>
+            <Label fx:id="activeLoansLabel" text="0" style="-fx-font-size: 24px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-box" alignment="CENTER"
+              style="-fx-padding: 15; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <Label text="Pagamentos Atrasados" style="-fx-font-weight: bold;"/>
+            <Label fx:id="latePaymentsLabel" text="0" style="-fx-font-size: 24px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-box" alignment="CENTER"
+              style="-fx-padding: 15; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <Label text="Receita Total" style="-fx-font-weight: bold;"/>
+            <Label fx:id="totalRevenueLabel" text="R$ 0,00" style="-fx-font-size: 24px;"/>
+        </VBox>
+
+        <VBox styleClass="kpi-box" alignment="CENTER"
+              style="-fx-padding: 15; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <Label text="Valor a Receber" style="-fx-font-weight: bold;"/>
+            <Label fx:id="receivableAmountLabel" text="R$ 0,00" style="-fx-font-size: 24px;"/>
+        </VBox>
+    </HBox>
+
+    <!-- Gráficos -->
+    <HBox spacing="15">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Taxa de Inadimplência" style="-fx-font-weight: bold;"/>
+            <PieChart fx:id="defaultRateChart" legendVisible="true"/>
+        </VBox>
+
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Total Emprestado por Período" style="-fx-font-weight: bold;"/>
+            <BarChart fx:id="loanAmountChart">
+                <xAxis>
+                    <CategoryAxis label="Período"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Valor (R$)"/>
+                </yAxis>
+            </BarChart>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="15">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Juros Acumulados" style="-fx-font-weight: bold;"/>
+            <LineChart fx:id="accumulatedInterestChart">
+                <xAxis>
+                    <CategoryAxis label="Período"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Valor (R$)"/>
+                </yAxis>
+            </LineChart>
+        </VBox>
+
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Distribuição de Empréstimos" style="-fx-font-weight: bold;"/>
+            <StackedBarChart fx:id="loanDistributionChart">
+                <xAxis>
+                    <CategoryAxis label="Tipo"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Valor (R$)"/>
+                </yAxis>
+            </StackedBarChart>
+        </VBox>
+    </HBox>
+
+    <!-- Alertas -->
+    <TitledPane text="Alertas e Notificações" expanded="true">
+        <VBox spacing="10">
+            <ListView fx:id="alertsList" prefHeight="150"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Notificar Inadimplentes" onAction="#handleNotifyDefaulters"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                <Button text="Atualizar Dados" onAction="#handleRefreshData"/>
+                <Button text="Voltar" onAction="#handleBack"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+</VBox>

@@ -1,7 +1,7 @@
 package emp.controllers;
 
 import emp.App;
-import emp.utils.AlertHelper;
+//import emp.utils.AlertHelper;
 import javafx.fxml.FXML;
 import java.io.IOException;
 
@@ -23,23 +23,18 @@ public class AgiotaMainMenuController {
     }
 
     @FXML
-    private void handleReports() {
-        AlertHelper.showSuccessMessage("Função em desenvolvimento: Relatórios");
+    private void handleReports() throws IOException {
+        App.setRoot("report");
     }
 
     @FXML
-    private void handleControlPanel() {
-        AlertHelper.showSuccessMessage("Função em desenvolvimento: Painel de Controle");
+    private void handleControlPanel() throws IOException {
+        App.setRoot("control-panel");
     }
 
     @FXML
-    private void handleLoanSimulation() {
-        AlertHelper.showSuccessMessage("Função em desenvolvimento: Simulação de Empréstimos");
-    }
-
-    @FXML
-    private void handleSettings() {
-        AlertHelper.showSuccessMessage("Função em desenvolvimento: Configurações");
+    private void handleSettings() throws IOException {
+        App.setRoot("settings");
     }
 
     @FXML

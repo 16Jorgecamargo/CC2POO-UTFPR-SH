@@ -4,8 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="emp.controllers.LoanRegistrationController">
+<VBox spacing="10"
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="emp.controllers.LoanRegistrationController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
@@ -45,9 +46,8 @@
     </GridPane>
 
     <HBox spacing="10" alignment="CENTER">
-        <Button text="Simular" onAction="#handleSimulate"/>
-        <Button text="Salvar" onAction="#handleSave" 
-                style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button text="Simular" onAction="#handleOpenSimulation"/>
+        <Button text="Salvar" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
         <Button text="Limpar" onAction="#handleClear"/>
         <Button text="Voltar" onAction="#handleBack"/>
     </HBox>

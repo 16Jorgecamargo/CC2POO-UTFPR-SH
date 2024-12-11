@@ -30,8 +30,7 @@ public class LoginController {
         // Inicializa o ComboBox com os tipos de usuário
         userTypeCombo.setItems(FXCollections.observableArrayList(
                 "Cliente",
-                "Agiota",
-                "Dev"));
+                "Agiota"));
         userTypeCombo.getSelectionModel().selectFirst();
         errorMessage.setText("");
     }
@@ -51,14 +50,11 @@ public class LoginController {
         if (username.equals("1") && password.equals("1") && userType.equals("Agiota")) {
             App.setRoot("agiota-main-menu");
             return;
-            
+
         } else if (username.equals("1") && password.equals("1") && userType.equals("Cliente")) {
             App.setRoot("cliente-main-menu");
             return;
-                        
-        } else if (username.equals("1") && password.equals("1") && userType.equals("Dev")) {
-            errorMessage.setText("Login do dev realizado com sucesso!");
-            
+
         } else {
             errorMessage.setText("Usuário, senha ou tipo de usuário inválidos!");
         }
