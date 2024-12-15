@@ -1,5 +1,9 @@
 package emp.controllers;
 
+import java.io.IOException;
+
+import org.kordamp.ikonli.javafx.FontIcon;
+
 import emp.App;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,15 +13,25 @@ import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DashboardController {
     @FXML
+    private Button botaoGerenciarClientes;
+    @FXML
+    private FontIcon iconeGerenciar;
+    private boolean telaGerenciamentoAtiva = false;
+    @FXML
     private ToggleGroup periodoGroup;
     @FXML
     private Label totalEmprestimosLabel;
+    @FXML
+    private Node conteudoPrincipal;
+    @FXML
+    private VBox dashboardContent;
     @FXML
     private Label totalEmprestadoLabel;
     @FXML
@@ -32,12 +46,21 @@ public class DashboardController {
     private LineChart<String, Number> evolucaoPagamentosChart;
     @FXML
     private ListView<String> listaAlertas;
+    @FXML
+    private VBox conteudoDashboard;
+    @FXML
+    private VBox conteudoGerenciamento;
 
     @FXML
     private void initialize() {
         configurarPeriodoSelector();
         configurarAlertas();
         carregarDadosMes();
+
+        // Garante que o conteúdo principal comece invisível
+        if (conteudoPrincipal != null) {
+            conteudoPrincipal.setVisible(false);
+        }
     }
 
     private void configurarPeriodoSelector() {
@@ -127,7 +150,7 @@ public class DashboardController {
                 new PieChart.Data(String.format("Quitados (%d%%)\n%d empréstimos",
                         (empQuitados * 100) / total, empQuitados), empQuitados));
         statusEmprestimoChart.setData(pieData);
-        
+
         pieData.forEach(data -> {
             final Node node = data.getNode();
             node.setStyle("-fx-pie-label-visible: true; -fx-pie-label-fill: white;");
@@ -179,6 +202,35 @@ public class DashboardController {
             root.getStyleClass().add("dark-theme");
         } else {
             root.getStyleClass().remove("dark-theme");
+        }
+    }
+
+    @FXML
+    private void alternarTelaGerenciamento() {
+        if (conteudoDashboard != null && conteudoGerenciamento != null) {
+            telaGerenciamentoAtiva = !telaGerenciamentoAtiva;
+
+            if (telaGerenciamentoAtiva) {
+                // Mudando para tela de gerenciamento
+                conteudoDashboard.setVisible(false);
+                conteudoGerenciamento.setVisible(true);
+                botaoGerenciarClientes.setText("Voltar");
+                iconeGerenciar.setIconLiteral("fas-arrow-left");
+            } else {
+                // Voltando para dashboard
+                conteudoDashboard.setVisible(true);
+                conteudoGerenciamento.setVisible(false);
+                botaoGerenciarClientes.setText("Gerenciar Clientes");
+                iconeGerenciar.setIconLiteral("fas-users");
+            }
+        }
+    }
+
+    @FXML
+    private void voltarDashboard() {
+        if (dashboardContent != null && conteudoPrincipal != null) {
+            dashboardContent.setVisible(true);
+            conteudoPrincipal.setVisible(false);
         }
     }
 

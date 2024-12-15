@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="emp.controllers.GerenciarClientesController"
+      styleClass="conteudo-principal"
+      spacing="20">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <VBox spacing="20" styleClass="cabecalho-clientes">
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <Label text="Gerenciamento de Clientes" styleClass="titulo-pagina"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Novo Cliente" styleClass="botao-adicionar" onAction="#adicionarCliente">
+                <graphic>
+                    <FontIcon iconLiteral="fas-plus"/>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <TextField fx:id="campoBusca" promptText="Buscar por nome ou CPF" 
+                      styleClass="campo-busca"/>
+            
+            <ComboBox fx:id="filtroStatus" promptText="Status" 
+                     styleClass="filtro-combo"/>
+            
+            <DatePicker fx:id="filtroData" promptText="Data de cadastro" 
+                       styleClass="filtro-data"/>
+        </HBox>
+    </VBox>
+
+    <TableView fx:id="tabelaClientes" styleClass="tabela-clientes" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colunaNome" text="Nome" prefWidth="200"/>
+            <TableColumn fx:id="colunaCPF" text="CPF" prefWidth="120"/>
+            <TableColumn fx:id="colunaTelefone" text="Telefone" prefWidth="120"/>
+            <TableColumn fx:id="colunaEmail" text="E-mail" prefWidth="200"/>
+            <TableColumn fx:id="colunaStatus" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="colunaAcoes" text="Ações" prefWidth="120"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</VBox>

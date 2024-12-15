@@ -1,0 +1,22 @@
+.titulo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.campo-texto {
+    -fx-pref-width: 300px;
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.campo-texto:focused {
+    -fx-border-color: #2196F3;
+}
+
+.mensagem-erro {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 14px;
+}

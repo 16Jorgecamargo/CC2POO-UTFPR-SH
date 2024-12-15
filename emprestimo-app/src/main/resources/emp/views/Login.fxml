@@ -4,10 +4,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox fx:id="loginContainer" styleClass="container" alignment="CENTER" spacing="20" 
-      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" 
-      fx:controller="emp.controllers.LoginController">
-    
+<VBox fx:id="loginContainer" styleClass="container" alignment="CENTER" spacing="20" stylesheets="@../styles/global.css,@../styles/login.css"
+    xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.LoginController">
+
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
@@ -17,34 +17,19 @@
     </ImageView>
 
     <Label text="Sistema de Empréstimos" styleClass="titulo"/>
-    
-    <TextField fx:id="campoUsuario" 
-               promptText="Nome de usuário ou e-mail" 
-               styleClass="campo-texto"/>
-               
-    <PasswordField fx:id="campoSenha" 
-                   promptText="Senha" 
-                   styleClass="campo-texto"/>
-                   
-    <CheckBox fx:id="lembrarMe" 
-              text="Lembrar-me" 
-              styleClass="checkbox"/>
-              
-    <Button fx:id="botaoLogin" 
-            text="Entrar" 
-            styleClass="botao-principal"
-            onAction="#fazerLogin"/>
-            
-    <Label fx:id="mensagemErro" 
-           styleClass="mensagem-erro"
-           visible="false"/>
-           
+
+    <TextField fx:id="campoUsuario" promptText="Nome de usuário ou e-mail" styleClass="campo-texto"/>
+
+    <PasswordField fx:id="campoSenha" promptText="Senha" styleClass="campo-texto"/>
+
+    <CheckBox fx:id="lembrarMe" text="Lembrar-me" styleClass="checkbox"/>
+
+    <Button fx:id="botaoLogin" text="Entrar" styleClass="botao-principal" onAction="#fazerLogin"/>
+
+    <Label fx:id="mensagemErro" styleClass="mensagem-erro" visible="false"/>
+
     <HBox spacing="10" alignment="CENTER">
-        <Button text="Esqueci minha senha" 
-                styleClass="botao-link"
-                onAction="#recuperarSenha"/>
-        <Button text="Criar conta" 
-                styleClass="botao-link"
-                onAction="#criarConta"/>
+        <Button text="Esqueci minha senha" styleClass="botao-link" onAction="#recuperarSenha"/>
+        <Button text="Criar conta" styleClass="botao-link" onAction="#criarConta"/>
     </HBox>
 </VBox>

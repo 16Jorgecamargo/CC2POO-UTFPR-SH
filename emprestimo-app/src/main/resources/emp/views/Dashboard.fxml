@@ -6,10 +6,10 @@
 <?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="root"
+<BorderPane fx:id="root" styleClass="dashboard" stylesheets="@../styles/global.css,@../styles/dashboard.css"
     xmlns="http://javafx.com/javafx"
-    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.DashboardController" styleClass="dashboard">
-   
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.DashboardController">
+
     <top>
         <StackPane styleClass="cabecalho">
             <HBox alignment="CENTER_LEFT" spacing="20">
@@ -56,9 +56,9 @@
                 </graphic>
             </Button>
 
-            <Button text="Gerenciar Clientes" styleClass="botao-menu">
+            <Button fx:id="botaoGerenciarClientes" text="Gerenciar Clientes" styleClass="botao-menu" onAction="#alternarTelaGerenciamento">
                 <graphic>
-                    <FontIcon iconLiteral="fas-users"/>
+                    <FontIcon fx:id="iconeGerenciar" iconLiteral="fas-users"/>
                 </graphic>
             </Button>
 
@@ -85,79 +85,82 @@
     </left>
 
     <center>
-        <VBox spacing="30">
-            <padding>
-                <Insets top="30" right="30" bottom="30" left="30"/>
-            </padding>
+        <StackPane>
+            <!-- Dashboard Conteúdo -->
+            <VBox fx:id="conteudoDashboard" spacing="30">
+                <padding>
+                    <Insets top="30" right="30" bottom="30" left="30"/>
+                </padding>
 
-            <!-- Seletor de Período -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Label text="Período:" styleClass="label-periodo"/>
-                <HBox spacing="15" styleClass="periodo-container">
-                    <fx:define>
-                        <ToggleGroup fx:id="periodoGroup"/>
-                    </fx:define>
-                    <RadioButton text="Hoje" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
-                    <RadioButton text="Semana" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
-                    <RadioButton text="Mês" toggleGroup="$periodoGroup" styleClass="periodo-radio" selected="true"/>
-                    <RadioButton text="Ano" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
-                    <RadioButton text="Tudo" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                <!-- Seletor de Período -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Período:" styleClass="label-periodo"/>
+                    <HBox spacing="15" styleClass="periodo-container">
+                        <fx:define>
+                            <ToggleGroup fx:id="periodoGroup"/>
+                        </fx:define>
+                        <RadioButton text="Hoje" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                        <RadioButton text="Semana" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                        <RadioButton text="Mês" toggleGroup="$periodoGroup" styleClass="periodo-radio" selected="true"/>
+                        <RadioButton text="Ano" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                        <RadioButton text="Tudo" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                    </HBox>
                 </HBox>
-            </HBox>
 
-            <!-- Métricas -->
-            <HBox spacing="20" styleClass="metricas-container">
-                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
-                    <Label text="Total Empréstimos" styleClass="metrica-titulo"/>
-                    <Label fx:id="totalEmprestimosLabel" text="0" styleClass="metrica-valor"/>
+                <!-- Métricas -->
+                <HBox spacing="20" styleClass="metricas-container">
+                    <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                        <Label text="Total Empréstimos" styleClass="metrica-titulo"/>
+                        <Label fx:id="totalEmprestimosLabel" text="0" styleClass="metrica-valor"/>
+                    </VBox>
+                    <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                        <Label text="Total Emprestado" styleClass="metrica-titulo"/>
+                        <Label fx:id="totalEmprestadoLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                    </VBox>
+                    <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                        <Label text="Saldo Devedor" styleClass="metrica-titulo"/>
+                        <Label fx:id="saldoDevedorLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                    </VBox>
+                    <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                        <Label text="Empréstimos Ativos" styleClass="metrica-titulo"/>
+                        <Label fx:id="emprestimosAtivosLabel" text="0" styleClass="metrica-valor"/>
+                    </VBox>
+                    <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                        <Label text="Pagamentos no Mês" styleClass="metrica-titulo"/>
+                        <Label fx:id="pagamentosMesLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Gráficos -->
+                <HBox spacing="30" VBox.vgrow="ALWAYS">
+                    <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
+                        <Label text="Status dos Empréstimos" styleClass="grafico-titulo"/>
+                        <PieChart fx:id="statusEmprestimoChart" styleClass="grafico-pizza"/>
+                    </VBox>
+                    <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
+                        <Label text="Evolução de Pagamentos" styleClass="grafico-titulo"/>
+                        <LineChart fx:id="evolucaoPagamentosChart" styleClass="grafico-linha">
+                            <xAxis>
+                                <CategoryAxis label="Período"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="Valor (R$)"/>
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+                </HBox>
+
+                <!-- Alertas -->
+                <VBox spacing="15" styleClass="alertas-container" maxHeight="200">
+                    <Label text="Alertas Importantes" styleClass="secao-titulo"/>
+                    <ListView fx:id="listaAlertas" VBox.vgrow="ALWAYS" styleClass="lista-alertas"/>
                 </VBox>
-
-                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
-                    <Label text="Total Emprestado" styleClass="metrica-titulo"/>
-                    <Label fx:id="totalEmprestadoLabel" text="R$ 0,00" styleClass="metrica-valor"/>
-                </VBox>
-
-                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
-                    <Label text="Saldo Devedor" styleClass="metrica-titulo"/>
-                    <Label fx:id="saldoDevedorLabel" text="R$ 0,00" styleClass="metrica-valor"/>
-                </VBox>
-
-                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
-                    <Label text="Empréstimos Ativos" styleClass="metrica-titulo"/>
-                    <Label fx:id="emprestimosAtivosLabel" text="0" styleClass="metrica-valor"/>
-                </VBox>
-
-                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
-                    <Label text="Pagamentos no Mês" styleClass="metrica-titulo"/>
-                    <Label fx:id="pagamentosMesLabel" text="R$ 0,00" styleClass="metrica-valor"/>
-                </VBox>
-            </HBox>
-
-            <!-- Gráficos -->
-            <HBox spacing="30" VBox.vgrow="ALWAYS">
-                <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
-                    <Label text="Status dos Empréstimos" styleClass="grafico-titulo"/>
-                    <PieChart fx:id="statusEmprestimoChart" styleClass="grafico-pizza"/>
-                </VBox>
-
-                <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
-                    <Label text="Evolução de Pagamentos" styleClass="grafico-titulo"/>
-                    <LineChart fx:id="evolucaoPagamentosChart" styleClass="grafico-linha">
-                        <xAxis>
-                            <CategoryAxis label="Período"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis label="Valor (R$)"/>
-                        </yAxis>
-                    </LineChart>
-                </VBox>
-            </HBox>
-
-            <!-- Alertas -->
-            <VBox spacing="15" styleClass="alertas-container" maxHeight="200">
-                <Label text="Alertas Importantes" styleClass="secao-titulo"/>
-                <ListView fx:id="listaAlertas" VBox.vgrow="ALWAYS" styleClass="lista-alertas"/>
             </VBox>
-        </VBox>
+
+            <!-- Gerenciar Clientes Content -->
+            <VBox fx:id="conteudoGerenciamento" visible="false">
+                <fx:include source="GerenciarClientes.fxml"/>
+            </VBox>
+        </StackPane>
     </center>
 </BorderPane>

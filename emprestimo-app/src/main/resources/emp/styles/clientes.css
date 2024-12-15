@@ -1,0 +1,142 @@
+/* Cabeçalho */
+.cabecalho-clientes {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.titulo-pagina {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+/* Botões e Campos */
+.botao-adicionar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.botao-adicionar:hover {
+    -fx-background-color: #388E3C;
+}
+
+.campo-busca {
+    -fx-pref-width: 300px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.filtro-combo, .filtro-data {
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+/* Tabela */
+.tabela-clientes {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.tabela-clientes .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+.tabela-clientes .table-row-cell {
+    -fx-background-color: white;
+}
+
+.tabela-clientes .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.tabela-clientes .table-row-cell:selected {
+    -fx-background-color: #e3f2fd;
+}
+
+/* Botões de Ação */
+.botao-acao {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+
+.botao-acao:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 4px;
+}
+
+.botao-acao .ikonli-font-icon {
+    -fx-icon-color: #495057;
+}
+
+/* Ícones específicos */
+.botao-acao:hover .fas-eye {
+    -fx-icon-color: #2196F3;
+}
+
+.botao-acao:hover .fas-pencil-alt {
+    -fx-icon-color: #4CAF50;
+}
+
+.botao-acao:hover .fas-trash {
+    -fx-icon-color: #dc3545;
+}
+
+/* Dark Theme */
+.dark-theme .cabecalho-clientes {
+    -fx-background-color: #2d2d2d;
+}
+
+.dark-theme .titulo-pagina {
+    -fx-text-fill: #64b5f6;
+}
+
+.dark-theme .campo-busca,
+.dark-theme .filtro-combo,
+.dark-theme .filtro-data {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #404040;
+    -fx-text-fill: #e0e0e0;
+}
+
+.dark-theme .tabela-clientes {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #404040;
+}
+
+.dark-theme .tabela-clientes .column-header {
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #e0e0e0;
+}
+
+.dark-theme .tabela-clientes .table-row-cell {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #e0e0e0;
+}
+
+.dark-theme .tabela-clientes .table-row-cell:odd {
+    -fx-background-color: #262626;
+}
+
+.dark-theme .tabela-clientes .table-row-cell:selected {
+    -fx-background-color: #1a1a1a;
+}
+
+.dark-theme .botao-acao .ikonli-font-icon {
+    -fx-icon-color: #e0e0e0;
+}
+
+.dark-theme .botao-acao:hover {
+    -fx-background-color: #404040;
+}
