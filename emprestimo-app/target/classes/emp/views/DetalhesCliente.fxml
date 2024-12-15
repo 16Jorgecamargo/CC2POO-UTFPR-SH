@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.DetalhesClienteController" styleClass="detalhes-container" spacing="20" stylesheets="@../styles/detalhe-cliente.css">
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <!-- Cabeçalho -->
+    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="cabecalho-detalhes">
+        <VBox>
+            <Label fx:id="nomeClienteLabel" text="Nome do Cliente" styleClass="titulo-cliente"/>
+            <HBox spacing="10">
+                <Label fx:id="cpfClienteLabel" text="CPF: 000.000.000-00"/>
+                <Label fx:id="statusClienteLabel" text="Status: Ativo" styleClass="status-ativo"/>
+            </HBox>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Renegociar Empréstimo" onAction="#renegociarEmprestimo" styleClass="botao-acao">
+            <graphic>
+                <FontIcon iconLiteral="fas-handshake"/>
+            </graphic>
+        </Button>
+        <Button text="Enviar Lembrete" onAction="#enviarLembrete" styleClass="botao-acao">
+            <graphic>
+                <FontIcon iconLiteral="fas-bell"/>
+            </graphic>
+        </Button>
+        <Button text="Fechar" onAction="#fecharDetalhes" styleClass="botao-fechar">
+            <graphic>
+                <FontIcon iconLiteral="fas-sign-out-alt"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- Informações do Cliente -->
+    <GridPane styleClass="info-cliente" hgap="20" vgap="10">
+        <Label text="Endereço:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label fx:id="enderecoLabel" text="Endereço completo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Telefone:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label fx:id="telefoneLabel" text="(00) 00000-0000" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="E-mail:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="emailLabel" text="email@exemplo.com" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Data de Cadastro:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label fx:id="dataCadastroLabel" text="01/01/2024" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    </GridPane>
+
+    <!-- Resumo Financeiro -->
+    <HBox spacing="20" styleClass="resumo-financeiro">
+        <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+            <Label text="Valor Total Emprestado" styleClass="card-titulo"/>
+            <Label fx:id="valorTotalLabel" text="R$ 0,00" styleClass="card-valor"/>
+        </VBox>
+        <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+            <Label text="Total Pago" styleClass="card-titulo"/>
+            <Label fx:id="totalPagoLabel" text="R$ 0,00" styleClass="card-valor"/>
+        </VBox>
+        <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+            <Label text="Saldo Restante" styleClass="card-titulo"/>
+            <Label fx:id="saldoRestanteLabel" text="R$ 0,00" styleClass="card-valor"/>
+        </VBox>
+    </HBox>
+
+    <!-- Histórico e Notificações -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Histórico de Empréstimos -->
+        <VBox spacing="10" HBox.hgrow="ALWAYS" prefWidth="800">
+            <Label text="Histórico de Empréstimos" styleClass="secao-titulo"/>
+            <TableView fx:id="tabelaEmprestimos" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaId" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="colunaValor" text="Valor Original" prefWidth="120"/>
+                    <TableColumn fx:id="colunaData" text="Data Início" prefWidth="100"/>
+                    <TableColumn fx:id="colunaParcPagas" text="Parcelas Pagas" prefWidth="120"/>
+                    <TableColumn fx:id="colunaParcRestantes" text="Parcelas Pendentes" prefWidth="140"/>
+                    <TableColumn fx:id="colunaStatus" text="Status" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Notificações -->
+        <VBox spacing="10" HBox.hgrow="ALWAYS" prefWidth="400" styleClass="notificacoes-container">
+            <Label text="Notificações Recentes" styleClass="secao-titulo"/>
+            <ListView fx:id="listaNotificacoes" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </HBox>
+
+    <!-- Gráficos -->
+    <HBox spacing="20">
+        <VBox styleClass="grafico-container" HBox.hgrow="ALWAYS">
+            <Label text="Histórico de Pagamentos" styleClass="grafico-titulo"/>
+            <BarChart fx:id="graficoHistoricoPagamentos">
+                <xAxis>
+                    <CategoryAxis label="Mês"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Valor (R$)"/>
+                </yAxis>
+            </BarChart>
+        </VBox>
+
+        <VBox styleClass="grafico-container" HBox.hgrow="ALWAYS">
+            <Label text="Tendência de Pagamentos" styleClass="grafico-titulo"/>
+            <LineChart fx:id="graficoTendenciaPagamentos">
+                <xAxis>
+                    <CategoryAxis label="Período"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Valor (R$)"/>
+                </yAxis>
+            </LineChart>
+        </VBox>
+    </HBox>
+</VBox>

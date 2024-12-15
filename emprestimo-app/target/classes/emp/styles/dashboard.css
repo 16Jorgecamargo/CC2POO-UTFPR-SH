@@ -34,14 +34,14 @@
     -fx-max-width: 200px;
 }
 
-.botao-menu:hover {
-    -fx-background-color: #f1f3f5;
-    -fx-text-fill: #2196F3;
-}
-
 .botao-menu .ikonli-font-icon {
     -fx-icon-size: 18px;
     -fx-icon-color: #495057;
+}
+
+.botao-menu:hover {
+    -fx-background-color: #f1f3f5;
+    -fx-text-fill: #2196F3;
 }
 
 .botao-menu:hover .ikonli-font-icon {
@@ -180,6 +180,27 @@
     -fx-icon-color: #495057;
 }
 
+/* Botão voltar*/
+
+.botao-menu.voltar {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.botao-menu.voltar:hover {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+}
+
+.botao-menu.voltar .ikonli-font-icon {
+    -fx-icon-color: white !important;
+}
+
+.botao-menu.voltar:hover .ikonli-font-icon {
+    -fx-icon-color: white !important;
+}
+
+
 /* Botão de sair */
 .botao-sair {
     -fx-text-fill: #dc3545;
@@ -294,6 +315,24 @@
 
 .dark-theme .botao-tema:hover {
     -fx-background-color: #404040;
+}
+
+.dark-theme .botao-menu.voltar {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+}
+
+.dark-theme .botao-menu.voltar:hover {
+    -fx-background-color: #1565C0;
+    -fx-text-fill: white;
+}
+
+.dark-theme .botao-menu.voltar .ikonli-font-icon {
+    -fx-icon-color: white !important;
+}
+
+.dark-theme .botao-menu.voltar:hover .ikonli-font-icon {
+    -fx-icon-color: white !important;
 }
 
 .dark-theme .botao-sair {

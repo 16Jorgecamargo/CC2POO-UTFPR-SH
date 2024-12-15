@@ -1,0 +1,135 @@
+.detalhes-container {
+    -fx-background-color: white;
+}
+
+/* Cabeçalho */
+.cabecalho-detalhes {
+    -fx-padding: 20px;
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 0 0 1 0;
+}
+
+.titulo-cliente {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.status-ativo {
+    -fx-text-fill: #28a745;
+}
+
+.status-inativo {
+    -fx-text-fill: #dc3545;
+}
+
+/* Informações do Cliente */
+.info-cliente {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+/* Cards de Resumo */
+.resumo-financeiro {
+    -fx-spacing: 20px;
+}
+
+.card-info {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+    -fx-alignment: CENTER;
+}
+
+.card-titulo {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+.card-valor {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+/* Tabela de Histórico */
+.table-view {
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+    -fx-min-height: 300px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 5px;
+}
+
+/* Gráficos */
+.grafico-container {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.grafico-titulo {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+/* Notificações */
+.notificacoes-container {
+    -fx-padding: 15px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-min-height: 300px;
+}
+
+.list-cell {
+    -fx-padding: 8px;
+    -fx-background-color: transparent;
+}
+
+.list-cell:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Botões de Ação */
+.botao-acao {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-acao:hover {
+    -fx-background-color: #1976D2;
+}
+
+.botao-fechar {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-fechar:hover {
+    -fx-background-color: #c82333;
+}
+
+.botao-fechar .ikonli-font-icon {
+    -fx-icon-color: white;
+}

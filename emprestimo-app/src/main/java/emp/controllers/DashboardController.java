@@ -211,16 +211,16 @@ public class DashboardController {
             telaGerenciamentoAtiva = !telaGerenciamentoAtiva;
 
             if (telaGerenciamentoAtiva) {
-                // Mudando para tela de gerenciamento
                 conteudoDashboard.setVisible(false);
                 conteudoGerenciamento.setVisible(true);
                 botaoGerenciarClientes.setText("Voltar");
+                botaoGerenciarClientes.getStyleClass().add("voltar");
                 iconeGerenciar.setIconLiteral("fas-arrow-left");
             } else {
-                // Voltando para dashboard
                 conteudoDashboard.setVisible(true);
                 conteudoGerenciamento.setVisible(false);
                 botaoGerenciarClientes.setText("Gerenciar Clientes");
+                botaoGerenciarClientes.getStyleClass().remove("voltar");
                 iconeGerenciar.setIconLiteral("fas-users");
             }
         }

@@ -1,14 +1,23 @@
 package emp.controllers;
 
+import java.io.IOException;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import emp.models.Cliente;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import org.kordamp.ikonli.javafx.FontIcon;
-import javafx.scene.control.TableCell;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,7 +37,6 @@ public class GerenciarClientesController {
 
     @FXML
     private Button botaoNovoCliente;
-    
 
     private ObservableList<Cliente> clientes = FXCollections.observableArrayList();
 
@@ -84,7 +92,7 @@ public class GerenciarClientesController {
                 // Configurar eventos
                 btnVisualizar.setOnAction(evento -> {
                     Cliente cliente = getTableView().getItems().get(getIndex());
-                    visualizarDetalhes();
+                    visualizarCliente(cliente);
                 });
 
                 btnEditar.setOnAction(evento -> {
@@ -109,10 +117,11 @@ public class GerenciarClientesController {
         });
 
         tabelaClientes.getColumns().setAll(
-                new TableColumn[] {colunaNome, colunaCpf, colunaTelefone, colunaEmail, colunaStatus, colunaAcoes});
+                new TableColumn[] { colunaNome, colunaCpf, colunaTelefone, colunaEmail, colunaStatus, colunaAcoes });
 
         // Dados de exemplo
         clientes.add(new Cliente("João Silva", "123.456.789-00", "(47) 99999-9999", "joao@email.com"));
+        clientes.add(new Cliente("João pedro", "123.456.789-00", "(47) 99999-9999", "joao@email.com"));
         clientes.add(new Cliente("Maria Santos", "987.654.321-00", "(47) 98888-8888", "maria@email.com"));
         tabelaClientes.setItems(clientes);
     }
@@ -148,11 +157,54 @@ public class GerenciarClientesController {
         }
     }
 
-    @FXML
-    private void visualizarDetalhes() {
-        Cliente clienteSelecionado = tabelaClientes.getSelectionModel().getSelectedItem();
-        if (clienteSelecionado != null) {
-            // Implementar lógica de visualização
+    private void visualizarCliente(Cliente cliente) {
+        if (cliente != null) {
+            try {
+                // Carregar o FXML
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/emp/views/DetalhesCliente.fxml"));
+                Parent root = loader.load();
+
+                // Criar o Stage
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.APPLICATION_MODAL);
+                dialogStage.initStyle(StageStyle.DECORATED);
+                dialogStage.setTitle("Detalhes do Cliente");
+                dialogStage.setResizable(true);
+
+                // Definir dimensões
+                dialogStage.setWidth(1920);
+                dialogStage.setHeight(1080);
+                dialogStage.setMinWidth(1280);
+                dialogStage.setMinHeight(720);
+
+                // Definir o owner (janela pai)
+                Scene currentScene = tabelaClientes.getScene();
+                if (currentScene != null && currentScene.getWindow() != null) {
+                    dialogStage.initOwner(currentScene.getWindow());
+                }
+
+                // Configurar a cena
+                Scene scene = new Scene(root, 1920, 1080);
+                dialogStage.setScene(scene);
+
+                // Configurar o controller
+                DetalhesClienteController controller = loader.getController();
+                controller.setDialogStage(dialogStage);
+                controller.setCliente(cliente);
+
+                // Centralizar e mostrar
+                dialogStage.centerOnScreen();
+                dialogStage.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao abrir detalhes do cliente");
+                alert.setContentText("Não foi possível carregar a tela de detalhes.");
+                alert.showAndWait();
+            }
         }
     }
 }
