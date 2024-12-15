@@ -1,80 +1,66 @@
 package emp.controllers;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-
-import java.io.IOException;
-
 import emp.App;
-import javafx.collections.FXCollections;
+import emp.models.Usuario;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 
 public class LoginController {
+    @FXML
+    private TextField campoUsuario;
 
     @FXML
-    private TextField userField;
+    private PasswordField campoSenha;
 
     @FXML
-    private PasswordField passwordField;
+    private CheckBox lembrarMe;
 
     @FXML
-    private ComboBox<String> userTypeCombo;
+    private Label mensagemErro;
+
+    private Usuario usuarioRoot;
 
     @FXML
-    private Label errorMessage;
-
-    @FXML
-    public void initialize() {
-        // Inicializa o ComboBox com os tipos de usuário
-        userTypeCombo.setItems(FXCollections.observableArrayList(
-                "Cliente",
-                "Agiota"));
-        userTypeCombo.getSelectionModel().selectFirst();
-        errorMessage.setText("");
+    private void initialize() {
+        mensagemErro.setVisible(false);
+        usuarioRoot = new Usuario("admin", "admin@sistema.com", "root");
     }
 
     @FXML
-    private void handleLogin() throws IOException {
-        String username = userField.getText();
-        String password = passwordField.getText();
-        String userType = userTypeCombo.getValue();
+    private void fazerLogin() {
+        String usuario = campoUsuario.getText();
+        String senha = campoSenha.getText();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            errorMessage.setText("Por favor, preencha todos os campos!");
-            return;
-        }
-
-        // TODO logica de autenticação
-        if (username.equals("1") && password.equals("1") && userType.equals("Agiota")) {
-            App.setRoot("agiota-main-menu");
-            return;
-
-        } else if (username.equals("1") && password.equals("1") && userType.equals("Cliente")) {
-            App.setRoot("cliente-main-menu");
-            return;
-
+        if (validarCredenciais(usuario, senha)) {
+            try {
+                App.setRoot("dashboard");
+            } catch (Exception e) {
+                exibirErro("Erro ao carregar dashboard");
+                e.printStackTrace();
+            }
         } else {
-            errorMessage.setText("Usuário, senha ou tipo de usuário inválidos!");
+            exibirErro("Usuário ou senha inválidos");
         }
     }
 
     @FXML
-    private void handleForgotPassword() {
-        try {
-            App.setRoot("forgot-password");
-        } catch (IOException e) {
-            errorMessage.setText("Erro ao abrir tela de recuperação de senha");
-        }
+    private void recuperarSenha() {
+        exibirErro("Link de recuperação enviado para o email cadastrado");
     }
 
     @FXML
-    private void handleCreateAccount() {
-        try {
-            App.setRoot("register");
-        } catch (IOException e) {
-            errorMessage.setText("Erro ao abrir tela de registro");
-        }
+    private void criarConta() {
+        exibirErro("Funcionalidade em desenvolvimento");
+    }
+
+    private boolean validarCredenciais(String usuario, String senha) {
+        return (usuario.equals(usuarioRoot.getNomeUsuario()) ||
+                usuario.equals(usuarioRoot.getEmail())) &&
+                usuarioRoot.autenticar(senha);
+    }
+
+    private void exibirErro(String mensagem) {
+        mensagemErro.setText(mensagem);
+        mensagemErro.setVisible(true);
     }
 }

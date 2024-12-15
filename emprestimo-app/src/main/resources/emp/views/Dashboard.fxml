@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="root"
+    xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.DashboardController" styleClass="dashboard">
+   
+    <top>
+        <StackPane styleClass="cabecalho">
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <padding>
+                    <Insets top="15" right="30" bottom="15" left="30"/>
+                </padding>
+                <ImageView fitHeight="40" fitWidth="40" styleClass="logo">
+                    <image>
+                        <Image url="@../images/logo.png"/>
+                    </image>
+                </ImageView>
+            </HBox>
+
+            <Label text="Sistema de Empréstimos" styleClass="titulo-principal"/>
+
+            <HBox alignment="CENTER_RIGHT">
+                <padding>
+                    <Insets right="30"/>
+                </padding>
+                <Button text="Modo Escuro" onAction="#toggleDarkMode" styleClass="botao-tema">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-moon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </StackPane>
+    </top>
+
+    <left>
+        <VBox styleClass="menu-lateral" spacing="10">
+            <padding>
+                <Insets top="30" right="20" bottom="30" left="20"/>
+            </padding>
+
+            <Button text="Solicitar Empréstimo" styleClass="botao-menu">
+                <graphic>
+                    <FontIcon iconLiteral="fas-hand-holding-usd"/>
+                </graphic>
+            </Button>
+
+            <Button text="Realizar Pagamento" styleClass="botao-menu">
+                <graphic>
+                    <FontIcon iconLiteral="fas-money-bill-wave"/>
+                </graphic>
+            </Button>
+
+            <Button text="Gerenciar Clientes" styleClass="botao-menu">
+                <graphic>
+                    <FontIcon iconLiteral="fas-users"/>
+                </graphic>
+            </Button>
+
+            <Button text="Gerar Relatórios" styleClass="botao-menu">
+                <graphic>
+                    <FontIcon iconLiteral="fas-chart-line"/>
+                </graphic>
+            </Button>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button text="Configurações" styleClass="botao-menu">
+                <graphic>
+                    <FontIcon iconLiteral="fas-cog"/>
+                </graphic>
+            </Button>
+
+            <Button text="Sair" onAction="#sair" styleClass="botao-menu, botao-sair">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sign-out-alt"/>
+                </graphic>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="30">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <!-- Seletor de Período -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Período:" styleClass="label-periodo"/>
+                <HBox spacing="15" styleClass="periodo-container">
+                    <fx:define>
+                        <ToggleGroup fx:id="periodoGroup"/>
+                    </fx:define>
+                    <RadioButton text="Hoje" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                    <RadioButton text="Semana" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                    <RadioButton text="Mês" toggleGroup="$periodoGroup" styleClass="periodo-radio" selected="true"/>
+                    <RadioButton text="Ano" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                    <RadioButton text="Tudo" toggleGroup="$periodoGroup" styleClass="periodo-radio"/>
+                </HBox>
+            </HBox>
+
+            <!-- Métricas -->
+            <HBox spacing="20" styleClass="metricas-container">
+                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                    <Label text="Total Empréstimos" styleClass="metrica-titulo"/>
+                    <Label fx:id="totalEmprestimosLabel" text="0" styleClass="metrica-valor"/>
+                </VBox>
+
+                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                    <Label text="Total Emprestado" styleClass="metrica-titulo"/>
+                    <Label fx:id="totalEmprestadoLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                </VBox>
+
+                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                    <Label text="Saldo Devedor" styleClass="metrica-titulo"/>
+                    <Label fx:id="saldoDevedorLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                </VBox>
+
+                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                    <Label text="Empréstimos Ativos" styleClass="metrica-titulo"/>
+                    <Label fx:id="emprestimosAtivosLabel" text="0" styleClass="metrica-valor"/>
+                </VBox>
+
+                <VBox styleClass="metrica-card" HBox.hgrow="ALWAYS">
+                    <Label text="Pagamentos no Mês" styleClass="metrica-titulo"/>
+                    <Label fx:id="pagamentosMesLabel" text="R$ 0,00" styleClass="metrica-valor"/>
+                </VBox>
+            </HBox>
+
+            <!-- Gráficos -->
+            <HBox spacing="30" VBox.vgrow="ALWAYS">
+                <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
+                    <Label text="Status dos Empréstimos" styleClass="grafico-titulo"/>
+                    <PieChart fx:id="statusEmprestimoChart" styleClass="grafico-pizza"/>
+                </VBox>
+
+                <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="grafico-container">
+                    <Label text="Evolução de Pagamentos" styleClass="grafico-titulo"/>
+                    <LineChart fx:id="evolucaoPagamentosChart" styleClass="grafico-linha">
+                        <xAxis>
+                            <CategoryAxis label="Período"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Valor (R$)"/>
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+            </HBox>
+
+            <!-- Alertas -->
+            <VBox spacing="15" styleClass="alertas-container" maxHeight="200">
+                <Label text="Alertas Importantes" styleClass="secao-titulo"/>
+                <ListView fx:id="listaAlertas" VBox.vgrow="ALWAYS" styleClass="lista-alertas"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
