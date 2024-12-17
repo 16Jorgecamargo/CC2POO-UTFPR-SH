@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="emp.controllers.RealizarPagamentoController"
+      styleClass="pagamento-container" 
+      spacing="20">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Cabeçalho -->
+    <VBox spacing="20" styleClass="cabecalho-pagamento">
+        <Label text="Realizar Pagamento" styleClass="titulo-pagina"/>
+        <Label text="Selecione um empréstimo para realizar o pagamento" styleClass="subtitulo-pagina"/>
+    </VBox>
+
+    <HBox spacing="30" VBox.vgrow="ALWAYS">
+        <!-- Lista de Empréstimos -->
+        <VBox spacing="15" HBox.hgrow="ALWAYS">
+            <Label text="Empréstimos Ativos" styleClass="secao-titulo"/>
+            <TableView fx:id="tabelaEmprestimos" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colunaCliente" text="Cliente" prefWidth="200"/>
+                    <TableColumn fx:id="colunaId" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="colunaValorOriginal" text="Valor Original" prefWidth="150"/>
+                    <TableColumn fx:id="colunaJuros" text="Juros" prefWidth="120"/>
+                    <TableColumn fx:id="colunaTotal" text="Total" prefWidth="150"/>
+                    <TableColumn fx:id="colunaVencimento" text="Vencimento" prefWidth="120"/>
+                    <TableColumn fx:id="colunaParcelas" text="Parcelas" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+            <!-- Histórico -->
+            <VBox spacing="10" prefHeight="200">
+                <Label text="Histórico de Pagamentos" styleClass="secao-titulo"/>
+                <ListView fx:id="historicoList" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </VBox>
+
+        <!-- Detalhes do Pagamento -->
+        <VBox spacing="15" prefWidth="350" styleClass="detalhes-container">
+            <Label text="Detalhes do Pagamento" styleClass="secao-titulo"/>
+            
+            <!-- Resumo do Empréstimo -->
+            <GridPane styleClass="info-container" hgap="10" vgap="10">
+                <Label text="Valor Inicial:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Label fx:id="valorInicialLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <Label text="Juros Acumulados:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Label fx:id="jurosLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                
+                <Label text="Multa por Atraso:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label fx:id="multaLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                
+                <Label text="Total a Pagar:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <Label fx:id="totalLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            </GridPane>
+
+            <!-- Opções de Pagamento -->
+            <VBox spacing="10" styleClass="opcoes-pagamento">
+                <Label text="Forma de Pagamento" styleClass="subsecao-titulo"/>
+                <HBox spacing="15">
+                    <fx:define>
+                        <ToggleGroup fx:id="formaPagamentoGroup"/>
+                    </fx:define>
+                    <RadioButton text="PIX" toggleGroup="$formaPagamentoGroup" selected="true"/>
+                    <RadioButton text="Transferência" toggleGroup="$formaPagamentoGroup"/>
+                    <RadioButton text="Dinheiro" toggleGroup="$formaPagamentoGroup"/>
+                </HBox>
+            </VBox>
+
+            <!-- Área de Pagamento -->
+            <VBox spacing="10" styleClass="area-pagamento">
+                <Label text="Valor do Pagamento" styleClass="subsecao-titulo"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="valorPagamentoField" promptText="R$ 0,00" HBox.hgrow="ALWAYS"/>
+                    <Button text="Pagar Total" onAction="#preencherValorTotal" styleClass="botao-secundario"/>
+                </HBox>
+            </VBox>
+
+            <!-- Ações -->
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Aplicar Multa" onAction="#aplicarMulta" styleClass="botao-multa">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-exclamation-circle"/>
+                    </graphic>
+                </Button>
+                <Button text="Renegociar" onAction="#renegociar" styleClass="botao-renegociar">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-handshake"/>
+                    </graphic>
+                </Button>
+                <Button text="Confirmar" onAction="#confirmarPagamento" styleClass="botao-confirmar">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-check"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

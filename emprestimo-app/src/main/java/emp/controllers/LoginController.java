@@ -23,7 +23,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         mensagemErro.setVisible(false);
-        usuarioRoot = new Usuario("admin", "admin@sistema.com", "root");
+        usuarioRoot = new Usuario("1", "admin@sistema.com", "1");
     }
 
     @FXML

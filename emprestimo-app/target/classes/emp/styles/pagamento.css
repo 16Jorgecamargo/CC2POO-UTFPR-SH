@@ -1,0 +1,93 @@
+/* Cabeçalho */
+.cabecalho-pagamento {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.titulo-pagina {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.subtitulo-pagina {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Tabela */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+/* Histórico */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+/* Detalhes */
+.info-container {
+    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+/* Botões */
+.botao-confirmar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-confirmar:hover {
+    -fx-background-color: #388E3C;
+}
+
+.botao-multa {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-multa:hover {
+    -fx-background-color: #c82333;
+}
+
+.botao-renegociar {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: black;
+    -fx-padding: 10px 20px;
+}
+
+.botao-renegociar:hover {
+    -fx-background-color: #e0a800;
+}
+
+.botao-secundario {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+}
+
+.botao-secundario:hover {
+    -fx-background-color: #5a6268;
+}
+
+.detalhes-container {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+    -fx-background-radius: 5px;
+}

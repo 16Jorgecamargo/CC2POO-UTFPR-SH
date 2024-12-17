@@ -156,11 +156,35 @@
 .lista-alertas .list-cell {
     -fx-padding: 10px;
     -fx-background-color: transparent;
-    -fx-text-fill: #dc3545;
 }
 
 .lista-alertas .list-cell:hover {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: transparent;
+}
+
+.texto-alerta {
+    -fx-text-fill: #dc3545;
+}
+
+.botao-remover-alerta {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-cursor: hand;
+}
+
+.botao-remover-alerta .ikonli-font-icon {
+    -fx-icon-color: #dc3545;
+}
+
+.botao-remover-alerta:hover {
+    -fx-background-color: #ffebee;
+    -fx-background-radius: 50%;
+}
+
+.botao-remover-alerta:hover .ikonli-font-icon {
+    -fx-icon-color: #c62828;
 }
 
 /* Botões e Controles */
@@ -303,6 +327,18 @@
 
 .dark-theme .lista-alertas .list-cell:hover {
     -fx-background-color: #404040;
+}
+
+.dark-theme .botao-remover-alerta:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.1);
+}
+
+.dark-theme .botao-remover-alerta .ikonli-font-icon {
+    -fx-icon-color: #ff4d4d;
+}
+
+.dark-theme .botao-remover-alerta:hover .ikonli-font-icon {
+    -fx-icon-color: #ff6666;
 }
 
 .dark-theme .botao-tema {

@@ -5,16 +5,16 @@ import java.io.IOException;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import emp.App;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Arc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,7 +23,24 @@ public class DashboardController {
     private Button botaoGerenciarClientes;
     @FXML
     private FontIcon iconeGerenciar;
+    @FXML
+    private VBox conteudoPagamento;
+    @FXML
+    private Button botaoRealizarPagamento;
+    @FXML
+    private VBox conteudoRelatorios;
+    @FXML
+    private Button botaoRelatorios;
+    private boolean telaRelatoriosAtiva = false;
     private boolean telaGerenciamentoAtiva = false;
+    private boolean telaPagamentoAtiva = false;
+    private boolean telaSolicitacaoAtiva = false;
+
+    @FXML
+    private VBox conteudoEmprestimo;
+    @FXML
+    private Button botaoSolicitarEmprestimo;
+
     @FXML
     private ToggleGroup periodoGroup;
     @FXML
@@ -57,7 +74,13 @@ public class DashboardController {
         configurarAlertas();
         carregarDadosMes();
 
-        // Garante que o conteúdo principal comece invisível
+        //conteúdo principal comece invisível
+        if (conteudoEmprestimo != null) {
+            conteudoEmprestimo.setVisible(false);
+        }
+        if (conteudoRelatorios != null) {
+            conteudoRelatorios.setVisible(false);
+        }
         if (conteudoPrincipal != null) {
             conteudoPrincipal.setVisible(false);
         }
@@ -177,6 +200,50 @@ public class DashboardController {
     }
 
     private void configurarAlertas() {
+        listaAlertas.setCellFactory(lv -> new ListCell<String>() {
+            private final Button btnRemover = new Button();
+            private final HBox hbox = new HBox();
+            private final Label label = new Label();
+
+            {
+                FontIcon removeIcon = new FontIcon("fas-times");
+                removeIcon.setIconSize(12);
+                btnRemover.setGraphic(removeIcon);
+                btnRemover.getStyleClass().add("botao-remover-alerta");
+
+                label.getStyleClass().add("texto-alerta");
+
+                hbox.setAlignment(Pos.CENTER_LEFT);
+                hbox.setSpacing(10);
+                HBox.setHgrow(label, Priority.ALWAYS);
+
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                hbox.getChildren().addAll(label, spacer, btnRemover);
+
+                btnRemover.setOnAction(event -> {
+                    String item = getItem();
+                    if (item != null) {
+                        listaAlertas.getItems().remove(item);
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(hbox);
+                    setStyle("-fx-text-fill: #dc3545;");
+                }
+            }
+        });
+
+        // Adicionar os alertas
         listaAlertas.getItems().addAll(
                 "⚠️ 3 contratos com pagamento atrasado",
                 "🔔 5 pagamentos vencem esta semana",
@@ -206,40 +273,145 @@ public class DashboardController {
     }
 
     @FXML
-    private void alternarTelaGerenciamento() {
-        if (conteudoDashboard != null && conteudoGerenciamento != null) {
-            telaGerenciamentoAtiva = !telaGerenciamentoAtiva;
-
-            if (telaGerenciamentoAtiva) {
-                conteudoDashboard.setVisible(false);
-                conteudoGerenciamento.setVisible(true);
-                botaoGerenciarClientes.setText("Voltar");
-                botaoGerenciarClientes.getStyleClass().add("voltar");
-                iconeGerenciar.setIconLiteral("fas-arrow-left");
-            } else {
-                conteudoDashboard.setVisible(true);
-                conteudoGerenciamento.setVisible(false);
-                botaoGerenciarClientes.setText("Gerenciar Clientes");
-                botaoGerenciarClientes.getStyleClass().remove("voltar");
-                iconeGerenciar.setIconLiteral("fas-users");
+    private void alternarTelaSolicitacao() {
+        if (!telaSolicitacaoAtiva) {
+            ocultarTodasTelas();
+            if (conteudoEmprestimo != null) {
+                conteudoEmprestimo.setVisible(true);
             }
+            configurarBotao(botaoSolicitarEmprestimo, "Voltar", "fas-arrow-left", true);
+            telaSolicitacaoAtiva = true;
+        } else {
+            voltarDashboard();
         }
     }
 
     @FXML
-    private void voltarDashboard() {
-        if (dashboardContent != null && conteudoPrincipal != null) {
-            dashboardContent.setVisible(true);
+    private void alternarTelaPagamento() {
+        if (!telaPagamentoAtiva) {
+            ocultarTodasTelas();
+            if (conteudoPagamento != null) {
+                conteudoPagamento.setVisible(true);
+            }
+            configurarBotao(botaoRealizarPagamento, "Voltar", "fas-arrow-left", true);
+            telaPagamentoAtiva = true;
+        } else {
+            voltarDashboard();
+        }
+    }
+
+    @FXML
+    private void alternarTelaGerenciamento() {
+        if (!telaGerenciamentoAtiva) {
+            ocultarTodasTelas();
+            if (conteudoGerenciamento != null) {
+                conteudoGerenciamento.setVisible(true);
+            }
+            configurarBotao(botaoGerenciarClientes, "Voltar", "fas-arrow-left", true);
+            telaGerenciamentoAtiva = true;
+        } else {
+            voltarDashboard();
+        }
+    }
+
+    @FXML
+    private void alternarTelaRelatorios() {
+        if (!telaRelatoriosAtiva) {
+            ocultarTodasTelas();
+            if (conteudoRelatorios != null) {
+                conteudoRelatorios.setVisible(true);
+            }
+            configurarBotao(botaoRelatorios, "Voltar", "fas-arrow-left", true);
+            telaRelatoriosAtiva = true;
+        } else {
+            voltarDashboard();
+        }
+    }
+
+    private void ocultarTodasTelas() {
+        if (conteudoDashboard != null) {
+            conteudoDashboard.setVisible(false);
+        }
+        if (conteudoEmprestimo != null) {
+            conteudoEmprestimo.setVisible(false);
+        }
+        if (conteudoPagamento != null) {
+            conteudoPagamento.setVisible(false);
+        }
+        if (conteudoGerenciamento != null) {
+            conteudoGerenciamento.setVisible(false);
+        }
+        if (conteudoRelatorios != null) {
+            conteudoRelatorios.setVisible(false);
+        }
+        if (conteudoPrincipal != null) {
             conteudoPrincipal.setVisible(false);
         }
+    }
+
+    private void voltarDashboard() {
+        ocultarTodasTelas();
+        if (conteudoDashboard != null) {
+            conteudoDashboard.setVisible(true);
+        }
+        if (conteudoPrincipal != null) {
+            conteudoPrincipal.setVisible(true);
+        }
+        resetarEstados();
+        resetarBotoes();
     }
 
     @FXML
     private void sair() {
         try {
             App.setRoot("login");
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void resetarEstados() {
+        telaSolicitacaoAtiva = false;
+        telaPagamentoAtiva = false;
+        telaGerenciamentoAtiva = false;
+        telaRelatoriosAtiva = false;
+    }
+
+    private void configurarBotao(Button botao, String texto, String icone, boolean voltar) {
+        if (botao != null) {
+            botao.setText(texto);
+            if (voltar) {
+                botao.getStyleClass().add("voltar");
+            } else {
+                botao.getStyleClass().remove("voltar");
+            }
+            botao.setGraphic(new FontIcon(icone));
+        }
+    }
+
+    private void resetarBotoes() {
+        if (botaoSolicitarEmprestimo != null) {
+            botaoSolicitarEmprestimo.setText("Solicitar Empréstimo");
+            botaoSolicitarEmprestimo.getStyleClass().remove("voltar");
+            botaoSolicitarEmprestimo.setGraphic(new FontIcon("fas-hand-holding-usd"));
+        }
+
+        if (botaoRealizarPagamento != null) {
+            botaoRealizarPagamento.setText("Realizar Pagamento");
+            botaoRealizarPagamento.getStyleClass().remove("voltar");
+            botaoRealizarPagamento.setGraphic(new FontIcon("fas-money-bill-wave"));
+        }
+
+        if (botaoGerenciarClientes != null) {
+            botaoGerenciarClientes.setText("Gerenciar Clientes");
+            botaoGerenciarClientes.getStyleClass().remove("voltar");
+            botaoGerenciarClientes.setGraphic(new FontIcon("fas-users"));
+        }
+
+        if (botaoRelatorios != null) {
+            botaoRelatorios.setText("Gerar Relatórios");
+            botaoRelatorios.getStyleClass().remove("voltar");
+            botaoRelatorios.setGraphic(new FontIcon("fas-chart-line"));
         }
     }
 }

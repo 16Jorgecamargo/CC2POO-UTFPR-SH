@@ -1,0 +1,81 @@
+/* file: src/main/resources/emp/styles/relatorios.css */
+
+.relatorios-container {
+    -fx-background-color: #f8f9fa;
+}
+
+.cabecalho-relatorio {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.titulo-pagina {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.subtitulo-pagina {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+.config-panel {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.secao-titulo {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.botao-gerar {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
+.botao-gerar:hover {
+    -fx-background-color: #1976D2;
+}
+
+.botao-pdf {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.botao-pdf:hover {
+    -fx-background-color: #c82333;
+}
+
+.botao-excel {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.botao-excel:hover {
+    -fx-background-color: #218838;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+}
+
+.chart {
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px;
+}

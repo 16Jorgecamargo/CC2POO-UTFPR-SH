@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.FormularioClienteController" spacing="20" styleClass="formulario-container">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <Label fx:id="tituloFormulario" styleClass="titulo-formulario"/>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="campoNome" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="CPF:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="campoCPF" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Telefone:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="campoTelefone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="E-mail:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="campoEmail" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Endereço:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField fx:id="campoEndereco" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <CheckBox fx:id="campoAtivo" text="Ativo" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#cancelar" styleClass="botao-cancelar"/>
+        <Button text="Salvar" onAction="#salvar" styleClass="botao-salvar"/>
+    </HBox>
+</VBox>

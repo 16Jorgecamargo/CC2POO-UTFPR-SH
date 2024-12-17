@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.SolicitarEmprestimoController" styleClass="conteudo-principal" spacing="20">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Cabeçalho -->
+    <VBox spacing="20" styleClass="cabecalho-emprestimo">
+        <Label text="Solicitar Empréstimo" styleClass="titulo-pagina"/>
+        <Label text="Preencha os dados abaixo para simular e solicitar seu empréstimo" styleClass="subtitulo-pagina"/>
+    </VBox>
+
+    <HBox spacing="30">
+        <!-- Formulário -->
+        <VBox spacing="20" styleClass="form-container" prefWidth="400">
+            <Label text="Dados do Empréstimo" styleClass="secao-titulo"/>
+
+            <!-- Seleção do Cliente -->
+            <VBox spacing="10">
+                <Label text="Cliente"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="comboCliente" promptText="Selecione o cliente" prefWidth="300"/>
+                    <Label fx:id="statusCliente" styleClass="status-cliente"/>
+                </HBox>
+            </VBox>
+
+            <!-- Tipo de Juros -->
+            <VBox spacing="10">
+                <Label text="Tipo de Juros"/>
+                <HBox spacing="15">
+                    <fx:define>
+                        <ToggleGroup fx:id="tipoJurosGroup"/>
+                    </fx:define>
+                    <RadioButton fx:id="jurosSimples" text="Juros Simples" toggleGroup="$tipoJurosGroup"/>
+                    <RadioButton fx:id="jurosComposto" text="Juros Compostos" toggleGroup="$tipoJurosGroup" selected="true"/>
+                </HBox>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="Taxa de Juros (% a.m.)"/>
+                <TextField fx:id="campoTaxa" text="1,99"/>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="Valor do Empréstimo"/>
+                <TextField fx:id="campoValor" promptText="R$ 0,00"/>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="Prazo (meses)"/>
+                <Spinner fx:id="spinnerPrazo" min="1" max="48" initialValue="12"/>
+            </VBox>
+
+            <HBox spacing="10">
+                <Button text="Simular" onAction="#simular" styleClass="botao-simular">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-calculator"/>
+                    </graphic>
+                </Button>
+                <Button text="Limpar" onAction="#limpar" styleClass="botao-limpar">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-eraser"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- Resultados da Simulação -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS">
+            <!-- Cards de Resumo -->
+            <HBox spacing="20" styleClass="resumo-container">
+                <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+                    <Label text="Valor da Parcela" styleClass="card-titulo"/>
+                    <Label fx:id="valorParcelaLabel" text="R$ 0,00" styleClass="card-valor"/>
+                </VBox>
+
+                <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+                    <Label text="Total a Pagar" styleClass="card-titulo"/>
+                    <Label fx:id="totalPagarLabel" text="R$ 0,00" styleClass="card-valor"/>
+                </VBox>
+
+                <VBox styleClass="card-info" HBox.hgrow="ALWAYS">
+                    <Label text="Total de Juros" styleClass="card-titulo"/>
+                    <Label fx:id="totalJurosLabel" text="R$ 0,00" styleClass="card-valor"/>
+                </VBox>
+            </HBox>
+
+            <!-- Gráfico Comparativo -->
+            <VBox styleClass="grafico-container" VBox.vgrow="ALWAYS">
+                <Label text="Comparativo de Parcelas por Prazo" styleClass="grafico-titulo"/>
+                <BarChart fx:id="graficoComparativo" categoryGap="50" barGap="10">
+                    <xAxis>
+                        <CategoryAxis label="Prazo (meses)" side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Valor (R$)" side="LEFT"/>
+                    </yAxis>
+                </BarChart>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Ações -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Visualizar Contrato" onAction="#visualizarContrato" styleClass="botao-contrato">
+            <graphic>
+                <FontIcon iconLiteral="fas-file-contract"/>
+            </graphic>
+        </Button>
+        <Button text="Confirmar Solicitação" onAction="#confirmarSolicitacao" styleClass="botao-confirmar">
+            <graphic>
+                <FontIcon iconLiteral="fas-check"/>
+            </graphic>
+        </Button>
+    </HBox>
+</VBox>

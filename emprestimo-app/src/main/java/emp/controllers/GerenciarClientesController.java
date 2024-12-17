@@ -1,6 +1,7 @@
 package emp.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -15,8 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -140,21 +139,112 @@ public class GerenciarClientesController {
 
     @FXML
     private void adicionarCliente() {
-        // Implementar lógica de adicionar
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/emp/views/FormularioCliente.fxml"));
+            Parent root = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Novo Cliente");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(tabelaClientes.getScene().getWindow());
+
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+
+            FormularioClienteController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setCliente(null);
+
+            dialogStage.showAndWait();
+
+            if (controller.isOkClicado()) {
+                Cliente novoCliente = controller.getCliente();
+                clientes.add(novoCliente);
+                tabelaClientes.refresh();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarErro("Erro ao abrir formulário de cliente");
+        }
+    }
+
+    @FXML
+    private void buscarClientes() {
+        String termoBusca = campoBusca.getText().toLowerCase();
+        String statusSelecionado = filtroStatus.getValue();
+        LocalDate dataSelecionada = filtroData.getValue();
+
+        ObservableList<Cliente> clientesFiltrados = clientes.filtered(cliente -> {
+            boolean correspondeTermoBusca = termoBusca.isEmpty() ||
+                    cliente.getNome().toLowerCase().contains(termoBusca) ||
+                    cliente.getCpf().contains(termoBusca);
+
+            boolean correspondeStatus = statusSelecionado.equals("Todos") ||
+                    (statusSelecionado.equals("Ativo") && cliente.isAtivo()) ||
+                    (statusSelecionado.equals("Inativo") && !cliente.isAtivo());
+
+            boolean correspondeData = dataSelecionada == null ||
+                    cliente.getDataCadastro().equals(dataSelecionada);
+
+            return correspondeTermoBusca && correspondeStatus && correspondeData;
+        });
+
+        tabelaClientes.setItems(clientesFiltrados);
     }
 
     @FXML
     private void editarCliente(Cliente cliente) {
         if (cliente != null) {
-            // Implementar lógica de edição
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/emp/views/FormularioCliente.fxml"));
+                Parent root = loader.load();
+
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Editar Cliente");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(tabelaClientes.getScene().getWindow());
+
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
+
+                FormularioClienteController controller = loader.getController();
+                controller.setDialogStage(dialogStage);
+                controller.setCliente(cliente);
+
+                dialogStage.showAndWait();
+
+                if (controller.isOkClicado()) {
+                    tabelaClientes.refresh();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                mostrarErro("Erro ao abrir formulário de edição");
+            }
         }
     }
 
     @FXML
     private void excluirCliente(Cliente cliente) {
         if (cliente != null) {
-            // Implementar lógica de exclusão
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmar Exclusão");
+            alert.setHeaderText("Excluir Cliente");
+            alert.setContentText("Tem certeza que deseja excluir o cliente " + cliente.getNome() + "?");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                clientes.remove(cliente);
+                tabelaClientes.refresh();
+            }
         }
+    }
+
+    private void mostrarErro(String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 
     private void visualizarCliente(Cliente cliente) {

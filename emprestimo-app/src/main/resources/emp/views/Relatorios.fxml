@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" 
+    fx:controller="emp.controllers.RelatoriosController" 
+    styleClass="relatorios-container" 
+    spacing="20">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Cabeçalho -->
+    <VBox spacing="10" styleClass="cabecalho-relatorio">
+        <Label text="Relatórios" styleClass="titulo-pagina"/>
+        <Label text="Configure e gere relatórios detalhados" styleClass="subtitulo-pagina"/>
+    </VBox>
+
+    <HBox spacing="30" VBox.vgrow="ALWAYS">
+        <!-- Painel de Configurações -->
+        <VBox spacing="15" styleClass="config-panel" prefWidth="300">
+            <Label text="Configurações" styleClass="secao-titulo"/>
+
+            <!-- Tipo de Relatório -->
+            <VBox spacing="10">
+                <Label text="Tipo de Relatório"/>
+                <ComboBox fx:id="tipoRelatorio" prefWidth="250"/>
+            </VBox>
+
+            <!-- Período -->
+            <VBox spacing="10">
+                <Label text="Período"/>
+                <ComboBox fx:id="selectPeriodo" prefWidth="250"/>
+            </VBox>
+
+            <!-- Datas Personalizadas -->
+            <HBox spacing="10" fx:id="datePickers" visible="false">
+                <DatePicker fx:id="dataInicio" promptText="Data Início"/>
+                <DatePicker fx:id="dataFim" promptText="Data Fim"/>
+            </HBox>
+
+            <!-- Filtros -->
+            <VBox spacing="10">
+                <Label text="Filtros"/>
+                <ComboBox fx:id="selectCliente" promptText="Selecione o Cliente" prefWidth="250"/>
+                <ComboBox fx:id="selectStatus" promptText="Status do Empréstimo" prefWidth="250"/>
+                <TextField fx:id="valorMinimo" promptText="Valor Mínimo"/>
+                <TextField fx:id="valorMaximo" promptText="Valor Máximo"/>
+            </VBox>
+
+            <!-- Ações -->
+            <VBox spacing="10">
+                <Button text="Gerar Relatório" onAction="#gerarRelatorio" styleClass="botao-gerar">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-file-alt"/>
+                    </graphic>
+                </Button>
+                <HBox spacing="10">
+                    <Button text="PDF" onAction="#exportarPDF" styleClass="botao-pdf">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-file-pdf"/>
+                        </graphic>
+                    </Button>
+                    <Button text="Excel" onAction="#exportarExcel" styleClass="botao-excel">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-file-excel"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <!-- Área de Visualização -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS">
+            <!-- Gráficos -->
+            <HBox spacing="20" prefHeight="300">
+                <PieChart fx:id="graficoStatus" title="Status dos Empréstimos" HBox.hgrow="ALWAYS"/>
+                <BarChart fx:id="graficoPagamentos" title="Pagamentos por Período" HBox.hgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Período"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Valor (R$)"/>
+                    </yAxis>
+                </BarChart>
+            </HBox>
+
+            <!-- Tabela de Dados -->
+            <VBox spacing="10" VBox.vgrow="ALWAYS">
+                <Label text="Dados Detalhados" styleClass="secao-titulo"/>
+                <TableView fx:id="tabelaDados" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colunaId" text="ID" prefWidth="80"/>
+                        <TableColumn fx:id="colunaCliente" text="Cliente" prefWidth="200"/>
+                        <TableColumn fx:id="colunaValorOriginal" text="Valor Original" prefWidth="150"/>
+                        <TableColumn fx:id="colunaSaldoAtual" text="Saldo Atual" prefWidth="150"/>
+                        <TableColumn fx:id="colunaStatus" text="Status" prefWidth="120"/>
+                        <TableColumn fx:id="colunaDataInicio" text="Data Início" prefWidth="120"/>
+                        <TableColumn fx:id="colunaDataFim" text="Data Fim" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Área de Anotações -->
+    <VBox spacing="10">
+        <Label text="Anotações" styleClass="secao-titulo"/>
+        <TextArea fx:id="campoAnotacoes" prefHeight="100"/>
+    </VBox>
+</VBox>

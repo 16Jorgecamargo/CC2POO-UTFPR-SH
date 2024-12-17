@@ -1,0 +1,130 @@
+/* Cabeçalho */
+.cabecalho-emprestimo {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.titulo-pagina {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.subtitulo-pagina {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Formulário */
+.form-container {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.form-container TextField {
+    -fx-pref-width: 300px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.form-container Slider {
+    -fx-show-tick-labels: true;
+    -fx-show-tick-marks: true;
+    -fx-major-tick-unit: 12;
+    -fx-minor-tick-count: 11;
+    -fx-snap-to-ticks: true;
+}
+
+/* Cards de Resumo */
+.card-info {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+    -fx-alignment: CENTER;
+}
+
+.card-titulo {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+.card-valor {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+/* Gráfico */
+.grafico-container {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4px;
+}
+
+.grafico-titulo {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+/* Botões */
+.botao-simular {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-simular:hover {
+    -fx-background-color: #1976D2;
+}
+
+.botao-limpar {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-limpar:hover {
+    -fx-background-color: #5a6268;
+}
+
+.botao-limpar .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.botao-contrato {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-contrato:hover {
+    -fx-background-color: #5a6268;
+}
+
+.botao-confirmar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-confirmar:hover {
+    -fx-background-color: #388E3C;
+}
+
+.status-cliente {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tipo-juros {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}

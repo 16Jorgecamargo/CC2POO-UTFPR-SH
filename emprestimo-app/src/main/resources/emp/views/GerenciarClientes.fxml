@@ -5,10 +5,7 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="emp.controllers.GerenciarClientesController"
-      styleClass="conteudo-principal"
-      spacing="20">
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.GerenciarClientesController" styleClass="conteudo-principal" spacing="20">
 
     <padding>
         <Insets top="20" right="30" bottom="20" left="30"/>
@@ -26,14 +23,17 @@
         </HBox>
 
         <HBox spacing="20" alignment="CENTER_LEFT">
-            <TextField fx:id="campoBusca" promptText="Buscar por nome ou CPF" 
-                      styleClass="campo-busca"/>
-            
-            <ComboBox fx:id="filtroStatus" promptText="Status" 
-                     styleClass="filtro-combo"/>
-            
-            <DatePicker fx:id="filtroData" promptText="Data de cadastro" 
-                       styleClass="filtro-data"/>
+            <TextField fx:id="campoBusca" promptText="Buscar por nome ou CPF" styleClass="campo-busca"/>
+
+            <ComboBox fx:id="filtroStatus" promptText="Status" styleClass="filtro-combo"/>
+
+            <DatePicker fx:id="filtroData" promptText="Data de cadastro" styleClass="filtro-data"/>
+
+            <Button text="Buscar" onAction="#buscarClientes" styleClass="botao-buscar">
+                <graphic>
+                    <FontIcon iconLiteral="fas-search"/>
+                </graphic>
+            </Button>
         </HBox>
     </VBox>
 

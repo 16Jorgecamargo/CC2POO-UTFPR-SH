@@ -1,7 +1,7 @@
 /* Cabeçalho */
 .cabecalho-clientes {
     -fx-background-color: white;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
 }
 
 .titulo-pagina {
@@ -30,7 +30,8 @@
     -fx-border-radius: 4px;
 }
 
-.filtro-combo, .filtro-data {
+.filtro-combo,
+.filtro-data {
     -fx-padding: 8px;
     -fx-background-color: white;
     -fx-border-color: #dee2e6;
@@ -78,6 +79,21 @@
 
 .botao-acao .ikonli-font-icon {
     -fx-icon-color: #495057;
+}
+
+.botao-buscar {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.botao-buscar:hover {
+    -fx-background-color: #1976D2;
+}
+
+.botao-buscar .ikonli-font-icon {
+    -fx-icon-color: white;
 }
 
 /* Ícones específicos */
@@ -139,4 +155,36 @@
 
 .dark-theme .botao-acao:hover {
     -fx-background-color: #404040;
+}
+
+/* Formulário */
+.formulario-container {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+}
+
+.titulo-formulario {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.botao-salvar {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-salvar:hover {
+    -fx-background-color: #388E3C;
+}
+
+.botao-cancelar {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}
+
+.botao-cancelar:hover {
+    -fx-background-color: #c82333;
 }

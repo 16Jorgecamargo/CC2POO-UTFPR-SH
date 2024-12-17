@@ -44,10 +44,10 @@ public class DetalhesClienteController {
             statusClienteLabel.setText("Status: " + (cliente.isAtivo() ? "Ativo" : "Inativo"));
             telefoneLabel.setText(cliente.getTelefone());
             emailLabel.setText(cliente.getEmail());
+            enderecoLabel.setText(cliente.getEndereco());
             dataCadastroLabel.setText(cliente.getDataCadastro()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             
-            // Aqui você preencheria os outros dados com valores reais do cliente
             carregarDadosFinanceiros();
             carregarHistoricoEmprestimos();
             carregarGraficos();
@@ -72,7 +72,12 @@ public class DetalhesClienteController {
 
     // Classes auxiliares e métodos de carregamento de dados
     private void carregarDadosFinanceiros() {
-        // Implementar carregamento dos dados financeiros
+        if (cliente != null) {
+            valorTotalLabel.setText(String.format("R$ %.2f", cliente.getTotalEmprestado()));
+            totalPagoLabel.setText(String.format("R$ %.2f", cliente.getTotalPago()));
+            saldoRestanteLabel.setText(String.format("R$ %.2f", 
+                cliente.getTotalEmprestado() - cliente.getTotalPago()));
+        }
     }
 
     private void carregarHistoricoEmprestimos() {
