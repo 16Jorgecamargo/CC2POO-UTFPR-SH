@@ -35,6 +35,3 @@
 ### Exportação
 ![Exportação](assets/images/exportacao.png)
 > Interface de exportação de dados.
-
----
-*Nota: Adicione as screenshots na pasta `assets/images` para visualização.*

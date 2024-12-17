@@ -93,6 +93,7 @@ emprestimo-app/
 
 ## 📖 Documentação
 Para mais informações sobre a implementação, consulte nosso [em desenvolvimento]().
+- [Screenshots & Demonstração](SCREENSHOTS.md)
 
 ## 🤝 Contribuição
 1. Faça um Fork do projeto
