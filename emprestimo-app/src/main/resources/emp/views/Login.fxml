@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
-<VBox fx:id="loginContainer" styleClass="container" alignment="CENTER" spacing="20" stylesheets="@../styles/global.css,@../styles/login.css"
+<!-- Container principal para a tela de login.
+     Controlador associado: emp.controllers.LoginController.
+     Os elementos abaixo compõem a interface de autenticação do usuário. -->
+<VBox fx:id="loginContainer" styleClass="container" alignment="CENTER" spacing="20"
+    stylesheets="@../styles/global.css,@../styles/login.css"
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.LoginController">
 
+    <!-- Define o preenchimento interno da tela -->
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+    <!-- Exibe o logotipo da aplicação -->
     <ImageView fitHeight="80" fitWidth="80" styleClass="logo">
-        <Image url="@../images/logo.png"/>
+        <image>
+            <Image url="@../images/logo.png"/>
+        </image>
     </ImageView>
 
+    <!-- Título principal da aplicação -->
     <Label text="Sistema de Empréstimos" styleClass="titulo"/>
 
+    <!-- Campo para entrada do usuário (nome ou e-mail) -->
     <TextField fx:id="campoUsuario" promptText="Nome de usuário ou e-mail" styleClass="campo-texto"/>
 
+    <!-- Campo para entrada da senha -->
     <PasswordField fx:id="campoSenha" promptText="Senha" styleClass="campo-texto"/>
 
+    <!-- Opção para lembrar o usuário -->
     <CheckBox fx:id="lembrarMe" text="Lembrar-me" styleClass="checkbox"/>
 
+    <!-- Botão que dispara o método fazerLogin no controlador -->
     <Button fx:id="botaoLogin" text="Entrar" styleClass="botao-principal" onAction="#fazerLogin"/>
 
+    <!-- Área de exibição de mensagem de erro, inicialmente invisível -->
     <Label fx:id="mensagemErro" styleClass="mensagem-erro" visible="false"/>
 
+    <!-- Contêiner com links para recuperação de senha e criação de conta -->
     <HBox spacing="10" alignment="CENTER">
         <Button text="Esqueci minha senha" styleClass="botao-link" onAction="#recuperarSenha"/>
         <Button text="Criar conta" styleClass="botao-link" onAction="#criarConta"/>

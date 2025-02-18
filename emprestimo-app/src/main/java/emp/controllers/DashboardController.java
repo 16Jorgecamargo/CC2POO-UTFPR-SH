@@ -5,9 +5,19 @@ import java.io.IOException;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import emp.App;
+import emp.models.Dashboard;
+import emp.dao.DashboardDAO;
+import emp.dao.GraficoDAO;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -18,74 +28,128 @@ import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Controlador principal do dashboard do sistema de empréstimos.
+ * Gerencia a exibição de estatísticas, gráficos e navegação entre diferentes telas.
+ * 
+ * Este controlador interage com as seguintes views FXML:
+ * - Dashboard principal
+ * - Tela de solicitação de empréstimo
+ * - Tela de pagamento
+ * - Tela de gerenciamento de clientes
+ */
 public class DashboardController {
-    @FXML
-    private Button botaoGerenciarClientes;
-    @FXML
-    private FontIcon iconeGerenciar;
-    @FXML
-    private VBox conteudoPagamento;
-    @FXML
-    private Button botaoRealizarPagamento;
-    @FXML
-    private VBox conteudoRelatorios;
-    @FXML
-    private Button botaoRelatorios;
-    private boolean telaRelatoriosAtiva = false;
-    private boolean telaGerenciamentoAtiva = false;
+    /** Botão para acessar o gerenciamento de clientes */
+    @FXML private Button botaoGerenciarClientes;
+    
+    /** Ícone do botão de gerenciamento */
+    @FXML private FontIcon iconeGerenciar;
+    
+    /** Container para a tela de pagamento */
+    @FXML private VBox conteudoPagamento;
+    
+    /** Controlador da tela de realizar pagamento */
+    private RealizarPagamentoController realizarPagamentoController;
+    
+    /** Botão para realizar pagamento */
+    @FXML private Button botaoRealizarPagamento;
+    
+    /** Indica se a tela de gerenciamento está ativa */
+    @FXML private boolean telaGerenciamentoAtiva = false;
+    
+    /** Indica se a tela de pagamento está ativa */
     private boolean telaPagamentoAtiva = false;
+    
+    /** Indica se a tela de solicitação está ativa */
     private boolean telaSolicitacaoAtiva = false;
 
-    @FXML
-    private VBox conteudoEmprestimo;
-    @FXML
-    private Button botaoSolicitarEmprestimo;
+    /** Container para a tela de solicitação de empréstimo */
+    @FXML private VBox conteudoEmprestimo;
+    
+    /** Botão para solicitar empréstimo */
+    @FXML private Button botaoSolicitarEmprestimo;
 
-    @FXML
-    private ToggleGroup periodoGroup;
-    @FXML
-    private Label totalEmprestimosLabel;
-    @FXML
-    private Node conteudoPrincipal;
-    @FXML
-    private VBox dashboardContent;
-    @FXML
-    private Label totalEmprestadoLabel;
-    @FXML
-    private Label saldoDevedorLabel;
-    @FXML
-    private Label emprestimosAtivosLabel;
-    @FXML
-    private Label pagamentosMesLabel;
-    @FXML
-    private PieChart statusEmprestimoChart;
-    @FXML
-    private LineChart<String, Number> evolucaoPagamentosChart;
-    @FXML
-    private ListView<String> listaAlertas;
-    @FXML
-    private VBox conteudoDashboard;
-    @FXML
-    private VBox conteudoGerenciamento;
+    /** Grupo de botões de alternância para selecionar o período */
+    @FXML private ToggleGroup periodoGroup;
+    
+    /** Label para exibir o total de empréstimos */
+    @FXML private Label totalEmprestimosLabel;
+    
+    /** Conteúdo principal do dashboard */
+    @FXML private Node conteudoPrincipal;
+    
+    /** Conteúdo do dashboard */
+    @FXML private VBox dashboardContent;
+    
+    /** Label para exibir o total emprestado */
+    @FXML private Label totalEmprestadoLabel;
+    
+    /** Label para exibir o saldo devedor */
+    @FXML private Label saldoDevedorLabel;
+    
+    /** Label para exibir o número de empréstimos ativos */
+    @FXML private Label emprestimosAtivosLabel;
+    
+    /** Label para exibir os pagamentos do mês */
+    @FXML private Label pagamentosMesLabel;
+    
+    /** Gráfico de pizza para status dos empréstimos */
+    @FXML private PieChart statusEmprestimoChart;
+    
+    /** Gráfico de linha para evolução dos pagamentos */
+    @FXML private LineChart<String, Number> evolucaoPagamentosChart;
+    
+    /** Lista de alertas */
+    @FXML private ListView<String> listaAlertas;
+    
+    /** Conteúdo do dashboard */
+    @FXML private VBox conteudoDashboard;
+    
+    /** Conteúdo de gerenciamento */
+    @FXML private VBox conteudoGerenciamento;
 
+    /** Controlador da tela de solicitação de empréstimo */
+    @FXML SolicitarEmprestimoController solicitarEmprestimoController;
+
+    /**
+     * Inicializa o controlador do dashboard.
+     * Carrega as sub-views necessárias e configura os componentes iniciais.
+     * 
+     * @throws IOException se houver erro no carregamento dos arquivos FXML
+     */
     @FXML
     private void initialize() {
+        try {
+            FXMLLoader loaderSolicitar = new FXMLLoader(getClass().getResource("/emp/views/SolicitarEmprestimo.fxml"));
+            Parent emprestimoRoot = loaderSolicitar.load();
+            solicitarEmprestimoController = loaderSolicitar.getController();
+            conteudoEmprestimo.getChildren().setAll(emprestimoRoot);
+            
+            FXMLLoader loaderPagamento = new FXMLLoader(getClass().getResource("/emp/views/RealizarPagamento.fxml"));
+            Parent pagamentoRoot = loaderPagamento.load();
+            realizarPagamentoController = loaderPagamento.getController();
+            conteudoPagamento.getChildren().setAll(pagamentoRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         configurarPeriodoSelector();
         configurarAlertas();
         carregarDadosMes();
 
-        //conteúdo principal comece invisível
+        // Inicializa os conteúdos como invisíveis
         if (conteudoEmprestimo != null) {
             conteudoEmprestimo.setVisible(false);
-        }
-        if (conteudoRelatorios != null) {
-            conteudoRelatorios.setVisible(false);
         }
         if (conteudoPrincipal != null) {
             conteudoPrincipal.setVisible(false);
         }
     }
 
+    /**
+     * Configura o seletor de período para filtrar os dados do dashboard.
+     * Adiciona listeners para atualizar os gráficos quando um novo período é selecionado.
+     */
     private void configurarPeriodoSelector() {
         periodoGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -111,94 +175,110 @@ public class DashboardController {
         });
     }
 
+    /**
+     * Carrega os dados do dashboard para o período de hoje.
+     */
     private void carregarDadosHoje() {
-        totalEmprestimosLabel.setText("3");
-        totalEmprestadoLabel.setText("R$ 10.000,00");
-        saldoDevedorLabel.setText("R$ 5.000,00");
-        emprestimosAtivosLabel.setText("5");
-        pagamentosMesLabel.setText("R$ 1.000,00");
+        carregarDashboard();
         atualizarGraficosPeriodo("Hoje");
     }
 
+    /**
+     * Carrega os dados do dashboard para o período da semana.
+     */
     private void carregarDadosSemana() {
-        totalEmprestimosLabel.setText("8");
-        totalEmprestadoLabel.setText("R$ 50.000,00");
-        saldoDevedorLabel.setText("R$ 25.000,00");
-        emprestimosAtivosLabel.setText("10");
-        pagamentosMesLabel.setText("R$ 5.000,00");
+        carregarDashboard();
         atualizarGraficosPeriodo("Semana");
     }
 
+    /**
+     * Carrega os dados do dashboard para o período do mês.
+     */
     private void carregarDadosMes() {
-        totalEmprestimosLabel.setText("15");
-        totalEmprestadoLabel.setText("R$ 100.000,00");
-        saldoDevedorLabel.setText("R$ 50.000,00");
-        emprestimosAtivosLabel.setText("15");
-        pagamentosMesLabel.setText("R$ 10.000,00");
+        carregarDashboard();
         atualizarGraficosPeriodo("Mês");
     }
 
+    /**
+     * Carrega os dados do dashboard para o período do ano.
+     */
     private void carregarDadosAno() {
-        totalEmprestimosLabel.setText("50");
-        totalEmprestadoLabel.setText("R$ 1.000.000,00");
-        saldoDevedorLabel.setText("R$ 500.000,00");
-        emprestimosAtivosLabel.setText("50");
-        pagamentosMesLabel.setText("R$ 100.000,00");
+        carregarDashboard();
         atualizarGraficosPeriodo("Ano");
     }
 
+    /**
+     * Carrega os dados do dashboard para todos os períodos.
+     */
     private void carregarDadosTudo() {
-        totalEmprestimosLabel.setText("100");
-        totalEmprestadoLabel.setText("R$ 5.000.000,00");
-        saldoDevedorLabel.setText("R$ 2.500.000,00");
-        emprestimosAtivosLabel.setText("100");
-        pagamentosMesLabel.setText("R$ 500.000,00");
+        carregarDashboard();
         atualizarGraficosPeriodo("Total");
     }
 
+    /**
+     * Atualiza os gráficos do dashboard com base no período selecionado.
+     * 
+     * @param periodo String indicando o período ("Hoje", "Semana", "Mês", "Ano", "Total")
+     */
     private void atualizarGraficosPeriodo(String periodo) {
-        // Valores baseados no período
-        int empEmDia = periodo.equals("Hoje") ? 3 : 60;
-        int empAtrasados = periodo.equals("Hoje") ? 1 : 20;
-        int empQuitados = periodo.equals("Hoje") ? 1 : 20;
-        int total = empEmDia + empAtrasados + empQuitados;
+        // Obter contagem de status reais
+        GraficoDAO graficoDAO = new GraficoDAO();
+        Map<String, Integer> statusContagem;
+        try {
+            statusContagem = graficoDAO.getContagemStatusEmprestimos();
+        } catch (SQLException ex) {
+            System.err.println("Erro ao carregar contagem de status: " + ex.getMessage());
+            return;
+        }
 
+        // Exemplo: considerar apenas os status relevantes, ajustando nomes conforme seu sistema.
+        int empEmDia = statusContagem.getOrDefault("Em dia", 0);
+        int empAtrasados = statusContagem.getOrDefault("Atrasado", 0);
+        int empQuitados = statusContagem.getOrDefault("Quitado", 0);
+        int total = empEmDia + empAtrasados + empQuitados;
+        
         // Atualiza gráfico de pizza
         statusEmprestimoChart.getData().clear();
         ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-                new PieChart.Data(String.format("Em dia (%d%%)\n%d empréstimos",
-                        (empEmDia * 100) / total, empEmDia), empEmDia),
-                new PieChart.Data(String.format("Atrasados (%d%%)\n%d empréstimos",
-                        (empAtrasados * 100) / total, empAtrasados), empAtrasados),
-                new PieChart.Data(String.format("Quitados (%d%%)\n%d empréstimos",
-                        (empQuitados * 100) / total, empQuitados), empQuitados));
+                new PieChart.Data(String.format("Em dia (%d%%)\n%d empréstimos", total > 0 ? (empEmDia * 100) / total : 0, empEmDia), empEmDia),
+                new PieChart.Data(String.format("Atrasados (%d%%)\n%d empréstimos", total > 0 ? (empAtrasados * 100) / total : 0, empAtrasados), empAtrasados),
+                new PieChart.Data(String.format("Quitados (%d%%)\n%d empréstimos", total > 0 ? (empQuitados * 100) / total : 0, empQuitados), empQuitados)
+        );
         statusEmprestimoChart.setData(pieData);
-
+        
+        // Mantém o estilo dos labels
         pieData.forEach(data -> {
             final Node node = data.getNode();
             node.setStyle("-fx-pie-label-visible: true; -fx-pie-label-fill: white;");
         });
 
-        // Atualiza gráfico de linha
+        // Atualiza o gráfico de linha (conforme sua lógica)
         evolucaoPagamentosChart.getData().clear();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Pagamentos - " + periodo);
-
-        if (periodo.equals("Hoje")) {
-            for (int i = 0; i < 24; i++) {
-                series.getData().add(new XYChart.Data<>(i + "h", Math.random() * 1000));
+        try {
+            if (periodo.equals("Hoje")) {
+                List<Double> pagamentosHora = graficoDAO.getPagamentosPorHora();
+                for (int i = 0; i < pagamentosHora.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(i + "h", pagamentosHora.get(i)));
+                }
+            } else {
+                List<Double> pagamentosMes = graficoDAO.getPagamentosPorMes();
+                String[] meses = {"Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"};
+                for (int i = 0; i < pagamentosMes.size(); i++) {
+                    series.getData().add(new XYChart.Data<>(meses[i], pagamentosMes.get(i)));
+                }
             }
-        } else {
-            String[] labels = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun" };
-            double baseValue = periodo.equals("Ano") ? 100000 : 10000;
-            for (String label : labels) {
-                series.getData().add(new XYChart.Data<>(label, Math.random() * baseValue));
-            }
+        } catch (SQLException ex) {
+            System.err.println("Erro ao carregar dados do gráfico de linha: " + ex.getMessage());
         }
-
         evolucaoPagamentosChart.getData().add(series);
     }
 
+    /**
+     * Configura a lista de alertas do sistema.
+     * Personaliza a exibição dos alertas e adiciona botões de remoção para cada item.
+     */
     private void configurarAlertas() {
         listaAlertas.setCellFactory(lv -> new ListCell<String>() {
             private final Button btnRemover = new Button();
@@ -257,11 +337,15 @@ public class DashboardController {
                 "⚠️ Backup automático não realizado há 2 dias");
     }
 
-    @FXML
-    private BorderPane root;
+    /** Container principal do layout */
+    @FXML private BorderPane root;
 
+    /** Indica se o modo escuro está ativado */
     private boolean isDarkMode = false;
 
+    /**
+     * Alterna entre o modo claro e escuro da interface.
+     */
     @FXML
     private void toggleDarkMode() {
         isDarkMode = !isDarkMode;
@@ -272,62 +356,60 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Exibe a tela de solicitação de empréstimo e carrega os dados necessários.
+     */
     @FXML
     private void alternarTelaSolicitacao() {
-        if (!telaSolicitacaoAtiva) {
-            ocultarTodasTelas();
-            if (conteudoEmprestimo != null) {
-                conteudoEmprestimo.setVisible(true);
-            }
-            configurarBotao(botaoSolicitarEmprestimo, "Voltar", "fas-arrow-left", true);
-            telaSolicitacaoAtiva = true;
-        } else {
-            voltarDashboard();
+        ocultarTodasTelas();
+        if (conteudoEmprestimo != null) {
+            conteudoEmprestimo.setVisible(true);
+            solicitarEmprestimoController.carregarClientes();
         }
     }
 
+    /**
+     * Exibe a tela de pagamento e carrega os dados necessários.
+     */
     @FXML
     private void alternarTelaPagamento() {
-        if (!telaPagamentoAtiva) {
-            ocultarTodasTelas();
-            if (conteudoPagamento != null) {
-                conteudoPagamento.setVisible(true);
+        ocultarTodasTelas();
+        if (conteudoPagamento != null) {
+            conteudoPagamento.setVisible(true);
+            if (realizarPagamentoController != null) {
+                realizarPagamentoController.carregarEmprestimos();
             }
-            configurarBotao(botaoRealizarPagamento, "Voltar", "fas-arrow-left", true);
-            telaPagamentoAtiva = true;
-        } else {
-            voltarDashboard();
         }
     }
 
+    /**
+     * Exibe a tela de gerenciamento de clientes.
+     */
     @FXML
     private void alternarTelaGerenciamento() {
-        if (!telaGerenciamentoAtiva) {
-            ocultarTodasTelas();
-            if (conteudoGerenciamento != null) {
-                conteudoGerenciamento.setVisible(true);
-            }
-            configurarBotao(botaoGerenciarClientes, "Voltar", "fas-arrow-left", true);
-            telaGerenciamentoAtiva = true;
-        } else {
-            voltarDashboard();
+        ocultarTodasTelas();
+        if (conteudoGerenciamento != null) {
+            conteudoGerenciamento.setVisible(true);
         }
     }
 
+    /**
+     * Exibe a tela principal do dashboard.
+     */
     @FXML
-    private void alternarTelaRelatorios() {
-        if (!telaRelatoriosAtiva) {
-            ocultarTodasTelas();
-            if (conteudoRelatorios != null) {
-                conteudoRelatorios.setVisible(true);
-            }
-            configurarBotao(botaoRelatorios, "Voltar", "fas-arrow-left", true);
-            telaRelatoriosAtiva = true;
-        } else {
-            voltarDashboard();
+    private void alternarTelaDashboard() {
+        ocultarTodasTelas();
+        if (conteudoDashboard != null) {
+            conteudoDashboard.setVisible(true);
         }
+        carregarDashboard();
+        resetarEstados();
     }
 
+    /**
+     * Oculta todas as telas do sistema.
+     * Utilizado antes de exibir uma nova tela.
+     */
     private void ocultarTodasTelas() {
         if (conteudoDashboard != null) {
             conteudoDashboard.setVisible(false);
@@ -341,14 +423,15 @@ public class DashboardController {
         if (conteudoGerenciamento != null) {
             conteudoGerenciamento.setVisible(false);
         }
-        if (conteudoRelatorios != null) {
-            conteudoRelatorios.setVisible(false);
-        }
         if (conteudoPrincipal != null) {
             conteudoPrincipal.setVisible(false);
         }
     }
 
+    /**
+     * Retorna para a tela principal do dashboard.
+     * Reseta todos os estados e configurações dos botões.
+     */
     private void voltarDashboard() {
         ocultarTodasTelas();
         if (conteudoDashboard != null) {
@@ -361,6 +444,11 @@ public class DashboardController {
         resetarBotoes();
     }
 
+    /**
+     * Realiza o logout do sistema e retorna para a tela de login.
+     * 
+     * @throws IOException se houver erro ao carregar a tela de login
+     */
     @FXML
     private void sair() {
         try {
@@ -370,13 +458,23 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Reseta os estados das telas.
+     */
     private void resetarEstados() {
         telaSolicitacaoAtiva = false;
         telaPagamentoAtiva = false;
         telaGerenciamentoAtiva = false;
-        telaRelatoriosAtiva = false;
     }
 
+    /**
+     * Configura o botão com texto, ícone e estilo apropriado.
+     * 
+     * @param botao o botão a ser configurado
+     * @param texto o texto a ser exibido no botão
+     * @param icone o ícone a ser exibido no botão
+     * @param voltar indica se o botão é de voltar
+     */
     private void configurarBotao(Button botao, String texto, String icone, boolean voltar) {
         if (botao != null) {
             botao.setText(texto);
@@ -389,6 +487,9 @@ public class DashboardController {
         }
     }
 
+    /**
+     * Reseta os botões para seus estados iniciais.
+     */
     private void resetarBotoes() {
         if (botaoSolicitarEmprestimo != null) {
             botaoSolicitarEmprestimo.setText("Solicitar Empréstimo");
@@ -408,10 +509,36 @@ public class DashboardController {
             botaoGerenciarClientes.setGraphic(new FontIcon("fas-users"));
         }
 
-        if (botaoRelatorios != null) {
-            botaoRelatorios.setText("Gerar Relatórios");
-            botaoRelatorios.getStyleClass().remove("voltar");
-            botaoRelatorios.setGraphic(new FontIcon("fas-chart-line"));
+    }
+
+    /**
+     * Carrega os dados do dashboard a partir do banco de dados.
+     * Atualiza os labels com informações sobre empréstimos e pagamentos.
+     * 
+     * Consulta as tabelas:
+     * - emprestimos (para total emprestado e ativos)
+     * - pagamentos (para saldo devedor e pagamentos do mês)
+     */
+    private void carregarDashboard() {
+        try {
+            Dashboard daoDashboard = new DashboardDAO().getDashboardData();
+            totalEmprestadoLabel.setText(formatMoney(daoDashboard.getTotalEmprestado()));
+            saldoDevedorLabel.setText(formatMoney(daoDashboard.getSaldoDevedor()));
+            emprestimosAtivosLabel.setText(String.valueOf(daoDashboard.getEmprestimosAtivos()));
+            pagamentosMesLabel.setText(formatMoney(daoDashboard.getPagamentosMes()));
+        } catch (SQLException e) {
+            // Trate ou registre o erro conforme necessário
+            System.err.println("Erro ao carregar dados do dashboard: " + e.getMessage());
         }
+    }
+
+    /**
+     * Formata um valor monetário para exibição.
+     * 
+     * @param value o valor a ser formatado
+     * @return uma string formatada representando o valor monetário
+     */
+    private String formatMoney(double value) {
+        return String.format("R$ %.2f", value);
     }
 }

@@ -7,16 +7,24 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Classe principal do aplicativo de Empréstimos.
+ * Inicia a interface JavaFX e gerencia a troca de telas via FXML.
+ */
 public class App extends Application {
     private static Scene scene;
     private static Stage stage;
-    
+
     // Dimensões das telas
     private static final double LOGIN_WIDTH = 400;
     private static final double LOGIN_HEIGHT = 600;
-    private static final double DASHBOARD_WIDTH = 1920;
-    private static final double DASHBOARD_HEIGHT = 1080;
 
+    /**
+     * Inicia a aplicação carregando a tela de login.
+     *
+     * @param primaryStage palco principal da aplicação.
+     * @throws IOException se ocorrer erro ao carregar o FXML.
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
@@ -28,8 +36,13 @@ public class App extends Application {
         stage.show();
     }
 
+    /**
+     * Define a nova raiz (tela) a partir de um arquivo FXML e ajusta dimensões conforme a tela.
+     *
+     * @param fxml nome do arquivo FXML (sem extensão).
+     * @throws IOException se ocorrer erro no carregamento do arquivo.
+     */
     public static void setRoot(String fxml) throws IOException {
-        // Ajusta dimensões baseado na tela
         switch (fxml) {
             case "login":
                 stage.setWidth(LOGIN_WIDTH);
@@ -37,18 +50,21 @@ public class App extends Application {
                 stage.setResizable(false);
                 break;
             case "dashboard":
-            case "gerenciarClientes":
-                stage.setWidth(DASHBOARD_WIDTH);
-                stage.setHeight(DASHBOARD_HEIGHT);
+                stage.setMaximized(true);
                 stage.setResizable(true);
                 break;
         }
-        
-        // Carrega nova tela e centraliza
         scene.setRoot(loadFXML(fxml));
         stage.centerOnScreen();
     }
 
+    /**
+     * Carrega o arquivo FXML informado.
+     *
+     * @param fxml nome do arquivo FXML (sem extensão).
+     * @return Parent resultado do carregamento do FXML.
+     * @throws IOException se ocorrer erro durante o carregamento.
+     */
     private static Parent loadFXML(String fxml) throws IOException {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/" + fxml + ".fxml"));
@@ -59,6 +75,11 @@ public class App extends Application {
         }
     }
 
+    /**
+     * Método principal que inicia o aplicativo.
+     *
+     * @param args argumentos de linha de comando.
+     */
     public static void main(String[] args) {
         launch();
     }

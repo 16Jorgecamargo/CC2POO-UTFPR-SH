@@ -6,11 +6,13 @@
 <?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+<!-- BorderPane principal que define a estrutura da dashboard. Controlador: emp.controllers.DashboardController. -->
 <BorderPane fx:id="root" styleClass="dashboard" stylesheets="@../styles/global.css,@../styles/dashboard.css"
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.DashboardController">
 
     <top>
+        <!-- Cabeçalho: exibe logo, título do sistema e botão para alternar o modo escuro -->
         <StackPane styleClass="cabecalho">
             <HBox alignment="CENTER_LEFT" spacing="20">
                 <padding>
@@ -39,6 +41,7 @@
     </top>
 
     <left>
+        <!-- Menu Lateral: botões para navegação entre solicitar empréstimo, realizar pagamento, gerenciar clientes, dashboard e sair -->
         <VBox styleClass="menu-lateral" spacing="10">
             <padding>
                 <Insets top="30" right="20" bottom="30" left="20"/>
@@ -62,19 +65,14 @@
                 </graphic>
             </Button>
 
-            <Button fx:id="botaoRelatorios" text="Gerar Relatórios" styleClass="botao-menu" onAction="#alternarTelaRelatorios">
+            <Button fx:id="botaoDashboard" text="Dashboard" styleClass="botao-menu" onAction="#alternarTelaDashboard">
                 <graphic>
-                    <FontIcon iconLiteral="fas-chart-line"/>
+                    <FontIcon iconLiteral="fas-tachometer-alt"/>
                 </graphic>
             </Button>
 
             <Region VBox.vgrow="ALWAYS"/>
 
-            <Button text="Configurações" styleClass="botao-menu">
-                <graphic>
-                    <FontIcon iconLiteral="fas-cog"/>
-                </graphic>
-            </Button>
 
             <Button text="Sair" onAction="#sair" styleClass="botao-menu, botao-sair">
                 <graphic>
@@ -85,8 +83,9 @@
     </left>
 
     <center>
+        <!-- Conteúdo Central: agrupa a dashboard principal e inclusões para outras funcionalidades -->
         <StackPane>
-            <!-- Dashboard Conteúdo -->
+            <!-- Dashboard: apresenta seletor de período, métricas, gráficos e alertas -->
             <VBox fx:id="conteudoDashboard" spacing="30">
                 <padding>
                     <Insets top="30" right="30" bottom="30" left="30"/>
@@ -157,7 +156,7 @@
                 </VBox>
             </VBox>
 
-            <!-- Solicitar Empréstimo -->
+            <!-- Inclusões de outras funcionalidades, com os respectivos FXMLs -->
             <VBox fx:id="conteudoEmprestimo" visible="false">
                 <fx:include source="SolicitarEmprestimo.fxml"/>
             </VBox>
@@ -172,10 +171,6 @@
                 <fx:include source="GerenciarClientes.fxml"/>
             </VBox>
 
-            <!-- Relatórios -->
-            <VBox fx:id="conteudoRelatorios" visible="false">
-                <fx:include source="Relatorios.fxml"/>
-            </VBox>
         </StackPane>
     </center>
 </BorderPane>

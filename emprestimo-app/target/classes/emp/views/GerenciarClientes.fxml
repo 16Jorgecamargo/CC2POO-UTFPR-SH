@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+<!-- Layout principal para o gerenciamento de clientes.
+     Controlador associado: emp.controllers.GerenciarClientesController.
+     Contém seções para cabeçalho, busca e exibição em tabela dos clientes. -->
 <VBox xmlns="http://javafx.com/javafx"
-    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.GerenciarClientesController" styleClass="conteudo-principal" spacing="20">
+    xmlns:fx="http://javafx.com/fxml" fx:controller="emp.controllers.GerenciarClientesController"
+    styleClass="conteudo-principal" spacing="20">
 
+    <!-- Define o padding do container -->
     <padding>
         <Insets top="20" right="30" bottom="20" left="30"/>
     </padding>
 
+    <!-- Cabeçalho da página com título e botão para adicionar novo cliente -->
     <VBox spacing="20" styleClass="cabecalho-clientes">
         <HBox alignment="CENTER_LEFT" spacing="20">
+            <!-- Título da página -->
             <Label text="Gerenciamento de Clientes" styleClass="titulo-pagina"/>
             <Region HBox.hgrow="ALWAYS"/>
+            <!-- Botão para adicionar um novo cliente; chama adicionarCliente -->
             <Button text="Novo Cliente" styleClass="botao-adicionar" onAction="#adicionarCliente">
                 <graphic>
                     <FontIcon iconLiteral="fas-plus"/>
@@ -22,13 +38,11 @@
             </Button>
         </HBox>
 
+        <!-- Seção de busca com filtros por nome, CPF, status e data de cadastro -->
         <HBox spacing="20" alignment="CENTER_LEFT">
             <TextField fx:id="campoBusca" promptText="Buscar por nome ou CPF" styleClass="campo-busca"/>
-
             <ComboBox fx:id="filtroStatus" promptText="Status" styleClass="filtro-combo"/>
-
             <DatePicker fx:id="filtroData" promptText="Data de cadastro" styleClass="filtro-data"/>
-
             <Button text="Buscar" onAction="#buscarClientes" styleClass="botao-buscar">
                 <graphic>
                     <FontIcon iconLiteral="fas-search"/>
@@ -37,6 +51,7 @@
         </HBox>
     </VBox>
 
+    <!-- Tabela para exibição dos clientes cadastrados, com colunas definidas -->
     <TableView fx:id="tabelaClientes" styleClass="tabela-clientes" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colunaNome" text="Nome" prefWidth="200"/>

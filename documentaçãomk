@@ -1,0 +1,196 @@
+Coletando informações do workspaceA seguir, uma documentação completa do projeto em Markdown:
+
+------------------------------------------------------
+# Documentação do Projeto: Sistema de Empréstimos
+
+## 1. Introdução
+
+Este projeto tem como objetivo gerenciar operações de empréstimos, permitindo o cadastro e a edição de clientes, a solicitação de empréstimos, o processamento de pagamentos e a visualização de estatísticas por meio de um dashboard interativo. A interface é implementada com JavaFX e as operações de persistência de dados são realizadas em um banco de dados MySQL.
+
+## 2. Tecnologias Utilizadas
+
+- **Java** – Linguagem de programação utilizada no desenvolvimento.
+- **JavaFX** – Utilizada para a criação da interface gráfica.
+- **MySQL** – Banco de dados relacional utilizado para armazenar clientes, empréstimos e pagamentos.
+- **Maven** – Gerenciador de dependências e compilação (veja emprestimo-app/pom.xml).
+- **Ikonli** – Biblioteca para ícones (usada com FontAwesome5).
+- **HikariCP** – Pool de conexões para otimização das operações com o banco de dados.
+
+## 3. Configuração do Ambiente
+
+### Pré-requisitos
+
+- Instalar o **JDK 11** (ou superior).
+- Instalar o **Maven**.
+- Instalar o **MySQL** e configurar o banco de dados correspondente.
+
+### Passos para Configuração
+
+1. **Clonar o repositório** e acessar o diretório do projeto.
+2. **Configurar o banco de dados**:  
+   - Criar um banco com o nome apropriado.
+   - Ajustar a string de conexão e as credenciais no arquivo de configuração (geralmente definido em uma classe de conexão no pacote `emp.dao`).
+3. **Instalar dependências**:  
+   Execute o comando abaixo para baixar e configurar todas as dependências do Maven:  
+   ```sh
+   mvn clean install
+   ```
+4. **Executar a aplicação**:  
+   Utilize o plugin Maven JavaFX (configurado em emprestimo-app/pom.xml) ou execute a classe principal (emp.App):
+   ```sh
+   mvn javafx:run
+   ```
+
+## 4. Estrutura do Projeto
+
+A estrutura do projeto está organizada em diferentes pacotes para separar as responsabilidades:
+
+- **emp**  
+  – Contém a classe principal (emp.App) e o arquivo _module-info.java_ (module-info.java).
+  
+- **emp.controllers**  
+  – Controladores JavaFX responsáveis pela lógica da interface do usuário.  
+  Exemplos:  
+  - DashboardController  
+  - SolicitarEmprestimoController  
+  - RealizarPagamentoController  
+  - GerenciarClientesController  
+  - FormularioClienteController  
+  - DetalhesClienteController
+
+- **emp.models**  
+  – Classes de domínio que representam os dados e regras de negócio.  
+  Exemplos:  
+  - Cliente  
+  - Emprestimo
+
+- **emp.dao**  
+  – Objetos de acesso a dados (DAO) que realizam as operações de CRUD no MySQL.
+
+- **emp.utils**  
+  – Classes utilitárias (por exemplo, para formatação de datas e valores).
+
+- **Recursos**  
+  – Arquivos FXML para definir as interfaces JavaFX (localizados em emprestimo-app/src/main/resources/emp/views) e arquivos de estilos CSS.
+
+### Diagrama UML (Pacotes)
+
+```plantuml
+@startuml
+package emp {
+  class App {
+    +main(String[] args)
+    +start(Stage primaryStage)
+  }
+  class module-info
+}
+
+package "emp.controllers" {
+  class DashboardController
+  class SolicitarEmprestimoController
+  class RealizarPagamentoController
+  class GerenciarClientesController
+  class FormularioClienteController
+  class DetalhesClienteController
+}
+
+package "emp.models" {
+  class Cliente
+  class Emprestimo
+}
+
+package "emp.dao" {
+  class ClienteDAO
+  class EmprestimoDAO
+  class PagamentoDAO
+}
+
+package "emp.utils" {
+  class Utils
+}
+
+App --> "emp.controllers" : Utiliza
+DashboardController --> SolicitarEmprestimoController : Colaboração
+EmprestimoController --> EmprestimoDAO : CRUD
+Cliente --> Emprestimo : 1 .. * 
+@enduml
+```
+
+## 5. Fluxo do Sistema
+
+1. **Login e Inicialização**  
+   - A aplicação é iniciada pela classe principal (emp.App), que carrega a tela de login.
+   
+2. **Dashboard**  
+   - Ao fazer login, o usuário é direcionado para o dashboard, onde são exibidas estatísticas e gráficos (controlados por DashboardController).
+   - O dashboard permite acesso às telas de solicitação de empréstimo, pagamento e gerenciamento de clientes.
+
+3. **Solicitação de Empréstimo**  
+   - O usuário preenche os dados na tela de solicitação (SolicitarEmprestimoController).  
+   - O sistema realiza a simulação do empréstimo (cálculo de parcelas, juros e total a pagar) e atualiza o gráfico comparativo.
+   - Ao confirmar a solicitação, um objeto do tipo Emprestimo é criado e inserido no banco.
+
+4. **Pagamento**  
+   - A tela de pagamentos (RealizarPagamentoController) exibe uma tabela com os empréstimos ativos.  
+   - O usuário pode selecionar um empréstimo, configurar o pagamento (parcelas, multas) e registrar a operação.
+
+5. **Gerenciamento de Clientes**  
+   - O módulo de gerenciamento (GerenciarClientesController) permite adicionar, editar, excluir e buscar clientes.
+   - A interface para cadastro/edição de clientes é gerenciada por FormularioClienteController.
+   - Detalhes do cliente, incluindo histórico de empréstimos e informações financeiras, são exibidos por DetalhesClienteController.
+
+## 6. Banco de Dados
+
+O sistema utiliza MySQL para armazenar as informações. Em linhas gerais, as principais tabelas são:
+
+- **Clientes**  
+  Campos típicos: id, nome, CPF, telefone, email, endereço, status (ativo/inativo), data de cadastro.  
+  Relacionamento: Cada cliente pode ter vários empréstimos.
+
+- **Empréstimos**  
+  Campos típicos: id, valor, prazo, taxa de juros, tipo de juros (simples/composto), valor da parcela, data de contratação, data de vencimento, status, multa aplicada, data de aprovação/solicitação.  
+  Relacionamento: Cada empréstimo está associado a um cliente.
+
+- **Pagamentos**  
+  Campos típicos: id, id do empréstimo, data do pagamento, valor pago, número de parcelas pagas, multa (se houver).
+
+Os relacionamentos são definidos de forma a garantir a integridade referencial (por exemplo, cada empréstimo possui a chave estrangeira do cliente correspondente).
+
+## 7. API ou Integração
+
+No momento, o sistema não se comunica com serviços externos; todas as operações são realizadas localmente, utilizando o banco de dados MySQL para persistência. Futuramente, pode ser considerada a integração com serviços de envio de notificações ou com um serviço de geração e assinatura de contratos.
+
+## 8. Casos de Uso
+
+### Exemplo 1: Cadastro de Cliente
+
+1. O usuário acessa a tela de gerenciamento de clientes.
+2. Clica em "Novo Cliente" para abrir a interface de cadastro (FormularioClienteController).
+3. Preenche os campos (nome, CPF, telefone, email, endereço, status).
+4. Salva as informações, que são persistidas via ClienteDAO.
+
+### Exemplo 2: Solicitação de Empréstimo
+
+1. O usuário seleciona a opção de solicitar um empréstimo.
+2. Na tela de solicitação (SolicitarEmprestimoController), insere o valor, seleciona o prazo e define a taxa de juros.
+3. O sistema realiza a simulação, exibindo os valores calculados e comparativos.
+4. Ao confirmar a operação, um novo registro de empréstimo é criado no banco.
+
+### Exemplo 3: Pagamento de Empréstimo
+
+1. O usuário acessa a tela de pagamentos.
+2. Seleciona o empréstimo desejado (listado na tabela).
+3. Configura as parcelas a serem pagas e, se necessário, insere valores de multa.
+4. Registra o pagamento, atualizando o saldo do cliente.
+
+## 9. Possíveis Melhorias e Futuras Implementações
+
+- **Visualização de Contrato**: implementação de um módulo que permita a visualização e assinatura do contrato.
+- **Integração com Serviços Externos**: envio automático de notificações via e-mail ou SMS utilizando APIs de terceiros.
+- **Relatórios e Estatísticas Avançadas**: aprimorar os gráficos do dashboard com mais informações financeiras e tendências.
+- **Autenticação e Segurança**: adicionar um módulo de autenticação robusta com controle de acesso baseado em funções.
+- **Testes Automatizados**: aumentar a cobertura de testes unitários e de integração para garantir a qualidade e a manutenibilidade do código.
+
+------------------------------------------------------
+
+Esta documentação fornece uma visão geral estruturada do projeto e serve de referência para desenvolvedores que precisam entender e manter o código. Caso necessário, diagramas mais detalhados podem ser gerados para representar fluxos específicos ou a interação entre classes críticas.

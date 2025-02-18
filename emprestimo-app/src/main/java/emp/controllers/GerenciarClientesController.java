@@ -1,11 +1,18 @@
 package emp.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import emp.dao.ClienteDAO;
 import emp.models.Cliente;
+import emp.services.ClienteService;
+import javafx.collections.FXCollections;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -17,28 +24,46 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleStringProperty;
-
+/**
+ * Controlador responsável pelas operações de gerenciamento de clientes.
+ * 
+ * Exibe os clientes em um TableView com colunas de informações (nome, CPF, telefone, e-mail e status)
+ * e possibilita ações como visualizar, editar e excluir clientes.
+ *
+ * Além disso, permite a filtragem por termo de busca, status e data de cadastro.
+ *
+ * Opera em conjunto com o ClienteService para atualizar a lista compartilhada de clientes e utiliza
+ * ClienteDAO para operações de banco de dados na tabela de clientes.
+ */
 public class GerenciarClientesController {
+
+    /** Tabela que lista os Clientes. */
     @FXML
     private TableView<Cliente> tabelaClientes;
 
+    /** Campo de texto para busca de clientes. */
     @FXML
     private TextField campoBusca;
 
+    /** Combobox para selecionar o filtro por status (Todos, Ativo, Inativo). */
     @FXML
     private ComboBox<String> filtroStatus;
 
+    /** DatePicker para filtrar clientes pela data de cadastro. */
     @FXML
     private DatePicker filtroData;
 
+    /** Botão para abrir o formulário de novo cliente. */
     @FXML
     private Button botaoNovoCliente;
 
-    private ObservableList<Cliente> clientes = FXCollections.observableArrayList();
+    /** DAO para executar operações no banco de dados referentes a Cliente. */
+    private ClienteDAO clienteDAO = new ClienteDAO();
 
+    /**
+     * Método de inicialização do controlador.
+     * Configura a tabela, os filtros e carrega os dados iniciais dos clientes.
+     */
     @FXML
     private void initialize() {
         configurarTabela();
@@ -46,6 +71,14 @@ public class GerenciarClientesController {
         carregarDadosIniciais();
     }
 
+    /**
+     * Configura as colunas da tabela de clientes e vincula a lista compartilhada proveniente do ClienteService.
+     * 
+     * As colunas configuradas são:
+     * - Nome, CPF, Telefone, E-mail e Status.
+     * - Uma coluna de Ações que disponibiliza os botões de visualizar, editar e excluir.
+     */
+    @SuppressWarnings("unchecked")
     private void configurarTabela() {
         TableColumn<Cliente, String> colunaNome = new TableColumn<>("Nome");
         colunaNome.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNome()));
@@ -60,8 +93,9 @@ public class GerenciarClientesController {
         colunaEmail.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEmail()));
 
         TableColumn<Cliente, String> colunaStatus = new TableColumn<>("Status");
-        colunaStatus
-                .setCellValueFactory(data -> new SimpleStringProperty(data.getValue().isAtivo() ? "Ativo" : "Inativo"));
+        colunaStatus.setCellValueFactory(data -> 
+            new SimpleStringProperty(data.getValue().isAtivo() ? "Ativo" : "Inativo")
+        );
 
         TableColumn<Cliente, Void> colunaAcoes = new TableColumn<>("Ações");
         colunaAcoes.setPrefWidth(120);
@@ -70,9 +104,7 @@ public class GerenciarClientesController {
             private final Button btnEditar = new Button();
             private final Button btnExcluir = new Button();
             private final HBox containerAcoes = new HBox(5);
-
             {
-                // Configurar ícones
                 FontIcon iconeVisualizar = new FontIcon("fas-eye");
                 iconeVisualizar.setIconSize(16);
                 btnVisualizar.setGraphic(iconeVisualizar);
@@ -88,22 +120,18 @@ public class GerenciarClientesController {
                 btnExcluir.setGraphic(iconeExcluir);
                 btnExcluir.getStyleClass().add("botao-acao");
 
-                // Configurar eventos
                 btnVisualizar.setOnAction(evento -> {
                     Cliente cliente = getTableView().getItems().get(getIndex());
                     visualizarCliente(cliente);
                 });
-
                 btnEditar.setOnAction(evento -> {
                     Cliente cliente = getTableView().getItems().get(getIndex());
                     editarCliente(cliente);
                 });
-
                 btnExcluir.setOnAction(evento -> {
                     Cliente cliente = getTableView().getItems().get(getIndex());
                     excluirCliente(cliente);
                 });
-
                 containerAcoes.setAlignment(Pos.CENTER);
                 containerAcoes.getChildren().addAll(btnVisualizar, btnEditar, btnExcluir);
             }
@@ -116,83 +144,101 @@ public class GerenciarClientesController {
         });
 
         tabelaClientes.getColumns().setAll(
-                new TableColumn[] { colunaNome, colunaCpf, colunaTelefone, colunaEmail, colunaStatus, colunaAcoes });
+            colunaNome, colunaCpf, colunaTelefone, colunaEmail, colunaStatus, colunaAcoes
+        );
 
-        // Dados de exemplo
-        clientes.add(new Cliente("João Silva", "123.456.789-00", "(47) 99999-9999", "joao@email.com"));
-        clientes.add(new Cliente("João pedro", "123.456.789-00", "(47) 99999-9999", "joao@email.com"));
-        clientes.add(new Cliente("Maria Santos", "987.654.321-00", "(47) 98888-8888", "maria@email.com"));
-        tabelaClientes.setItems(clientes);
+        // Liga o TableView à lista compartilhada do ClienteService
+        tabelaClientes.setItems(ClienteService.getClientes());
     }
 
-    private void carregarDadosIniciais() {
-        // TODO: Implement loading initial data from your data source
-        // For now, we'll add some sample data
-        clientes.add(new Cliente("John Doe", "123.456.789-00", "47 99999-9999", "john@email.com"));
-        tabelaClientes.setItems(clientes);
-    }
-
+    /**
+     * Configura o filtro de status, adicionando as opções "Todos", "Ativo" e "Inativo".
+     */
     private void configurarFiltros() {
         filtroStatus.getItems().addAll("Todos", "Ativo", "Inativo");
         filtroStatus.setValue("Todos");
     }
 
+    /**
+     * Carrega os dados iniciais dos clientes atualizando a lista compartilhada.
+     * Este método consulta o banco de dados pelas informações na tabela de clientes através do ClienteService.
+     */
+    private void carregarDadosIniciais() {
+        try {
+            ClienteService.atualizarClientes();
+            System.out.println("Clientes carregados: " + ClienteService.getClientes().size());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            mostrarErro("Erro ao carregar clientes: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Abre o formulário para adicionar um novo cliente.
+     * Após o fechamento do diálogo, os dados são recarregados se a operação for confirmada.
+     */
     @FXML
     private void adicionarCliente() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/emp/views/FormularioCliente.fxml"));
-            Parent root = loader.load();
+            Parent page = loader.load();
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Novo Cliente");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(tabelaClientes.getScene().getWindow());
-
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
+            dialogStage.setScene(new Scene(page));
 
             FormularioClienteController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setCliente(null);
 
             dialogStage.showAndWait();
 
             if (controller.isOkClicado()) {
-                Cliente novoCliente = controller.getCliente();
-                clientes.add(novoCliente);
-                tabelaClientes.refresh();
+                carregarDadosIniciais();
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
-            mostrarErro("Erro ao abrir formulário de cliente");
+            mostrarErro("Erro ao abrir formulário de cliente: " + e.getMessage());
         }
     }
 
+    /**
+     * Realiza a busca de clientes aplicando os filtros de termo, status e data de cadastro.
+     * Atualiza o TableView com os resultados filtrados.
+     */
     @FXML
     private void buscarClientes() {
-        String termoBusca = campoBusca.getText().toLowerCase();
-        String statusSelecionado = filtroStatus.getValue();
-        LocalDate dataSelecionada = filtroData.getValue();
+        try {
+            String termoBusca = campoBusca.getText().toLowerCase();
+            String statusSelecionado = filtroStatus.getValue();
+            LocalDate dataSelecionada = filtroData.getValue();
 
-        ObservableList<Cliente> clientesFiltrados = clientes.filtered(cliente -> {
-            boolean correspondeTermoBusca = termoBusca.isEmpty() ||
-                    cliente.getNome().toLowerCase().contains(termoBusca) ||
-                    cliente.getCpf().contains(termoBusca);
-
-            boolean correspondeStatus = statusSelecionado.equals("Todos") ||
-                    (statusSelecionado.equals("Ativo") && cliente.isAtivo()) ||
-                    (statusSelecionado.equals("Inativo") && !cliente.isAtivo());
-
-            boolean correspondeData = dataSelecionada == null ||
-                    cliente.getDataCadastro().equals(dataSelecionada);
-
-            return correspondeTermoBusca && correspondeStatus && correspondeData;
-        });
-
-        tabelaClientes.setItems(clientesFiltrados);
+            List<Cliente> todosClientes = new ClienteDAO().buscarTodos();
+            tabelaClientes.setItems(FXCollections.observableArrayList(
+                todosClientes.stream()
+                    .filter(cliente -> 
+                        (termoBusca.isEmpty() ||
+                         cliente.getNome().toLowerCase().contains(termoBusca) ||
+                         cliente.getCpf().contains(termoBusca)) &&
+                        (statusSelecionado.equals("Todos") ||
+                         (statusSelecionado.equals("Ativo") && cliente.isAtivo()) ||
+                         (statusSelecionado.equals("Inativo") && !cliente.isAtivo())) &&
+                        (dataSelecionada == null || cliente.getDataCadastro().equals(dataSelecionada))
+                    )
+                    .collect(Collectors.toList())
+            ));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            mostrarErro("Erro ao buscar clientes: " + e.getMessage());
+        }
     }
 
+    /**
+     * Abre o formulário para editar os dados do cliente selecionado.
+     * Após a edição, a tabela é atualizada se houver confirmação.
+     *
+     * @param cliente Cliente a ser editado.
+     */
     @FXML
     private void editarCliente(Cliente cliente) {
         if (cliente != null) {
@@ -204,9 +250,7 @@ public class GerenciarClientesController {
                 dialogStage.setTitle("Editar Cliente");
                 dialogStage.initModality(Modality.WINDOW_MODAL);
                 dialogStage.initOwner(tabelaClientes.getScene().getWindow());
-
-                Scene scene = new Scene(root);
-                dialogStage.setScene(scene);
+                dialogStage.setScene(new Scene(root));
 
                 FormularioClienteController controller = loader.getController();
                 controller.setDialogStage(dialogStage);
@@ -217,7 +261,6 @@ public class GerenciarClientesController {
                 if (controller.isOkClicado()) {
                     tabelaClientes.refresh();
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
                 mostrarErro("Erro ao abrir formulário de edição");
@@ -225,6 +268,11 @@ public class GerenciarClientesController {
         }
     }
 
+    /**
+     * Exclui o cliente selecionado, confirmando a operação pelo usuário.
+     *
+     * @param cliente Cliente a ser excluído.
+     */
     @FXML
     private void excluirCliente(Cliente cliente) {
         if (cliente != null) {
@@ -232,14 +280,23 @@ public class GerenciarClientesController {
             alert.setTitle("Confirmar Exclusão");
             alert.setHeaderText("Excluir Cliente");
             alert.setContentText("Tem certeza que deseja excluir o cliente " + cliente.getNome() + "?");
-
             if (alert.showAndWait().get() == ButtonType.OK) {
-                clientes.remove(cliente);
-                tabelaClientes.refresh();
+                try {
+                    clienteDAO.excluir(cliente.getCpf());
+                    ClienteService.atualizarClientes();
+                    mostrarErro("Cliente excluído com sucesso!");
+                } catch (SQLException e) {
+                    mostrarErro("Erro ao excluir cliente do banco de dados: " + e.getMessage());
+                }
             }
         }
     }
 
+    /**
+     * Exibe uma janela de alerta com a mensagem de erro especificada.
+     * 
+     * @param mensagem Mensagem de erro a ser exibida.
+     */
     private void mostrarErro(String mensagem) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
@@ -247,53 +304,32 @@ public class GerenciarClientesController {
         alert.showAndWait();
     }
 
+    /**
+     * Abre a janela de detalhes do cliente.
+     *
+     * @param cliente Cliente cujos detalhes serão exibidos.
+     */
     private void visualizarCliente(Cliente cliente) {
         if (cliente != null) {
             try {
-                // Carregar o FXML
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/emp/views/DetalhesCliente.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/emp/views/DetalhesCliente.fxml"));
                 Parent root = loader.load();
 
-                // Criar o Stage
                 Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.APPLICATION_MODAL);
                 dialogStage.initStyle(StageStyle.DECORATED);
-                dialogStage.setTitle("Detalhes do Cliente");
+                dialogStage.setTitle("Detalhes do Cliente - " + cliente.getNome());
+                dialogStage.setScene(new Scene(root));
+                dialogStage.setMaximized(true);
                 dialogStage.setResizable(true);
 
-                // Definir dimensões
-                dialogStage.setWidth(1920);
-                dialogStage.setHeight(1080);
-                dialogStage.setMinWidth(1280);
-                dialogStage.setMinHeight(720);
-
-                // Definir o owner (janela pai)
-                Scene currentScene = tabelaClientes.getScene();
-                if (currentScene != null && currentScene.getWindow() != null) {
-                    dialogStage.initOwner(currentScene.getWindow());
-                }
-
-                // Configurar a cena
-                Scene scene = new Scene(root, 1920, 1080);
-                dialogStage.setScene(scene);
-
-                // Configurar o controller
                 DetalhesClienteController controller = loader.getController();
                 controller.setDialogStage(dialogStage);
                 controller.setCliente(cliente);
 
-                // Centralizar e mostrar
-                dialogStage.centerOnScreen();
-                dialogStage.showAndWait();
-
+                dialogStage.show();
             } catch (IOException e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText("Erro ao abrir detalhes do cliente");
-                alert.setContentText("Não foi possível carregar a tela de detalhes.");
-                alert.showAndWait();
+                mostrarErro("Erro ao abrir detalhes do cliente: " + e.getMessage());
             }
         }
     }

@@ -1,39 +1,71 @@
+<!-- 
+    pom.xml: Configuração Maven para a aplicação de Empréstimo.
+    Este arquivo define:
+      - Grupo, artefato e versão do projeto.
+      - Propriedades de compilação (encoding, versões do Java e JavaFX).
+      - Dependências: JavaFX, Ikonli para ícones, MySQL Connector para banco e HikariCP para pool de conexões.
+      - Plugins: Maven Compiler e JavaFX Maven Plugin para empacotamento e execução da aplicação.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- Definição do modelo, grupo, artefato e versão do projeto -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>emp</groupId>
     <artifactId>emprestimo-app</artifactId>
     <version>1.0</version>
+    
     <properties>
+        <!-- Propriedades de compilação e versão do JavaFX -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <javafx.version>13</javafx.version>
     </properties>
+    
     <dependencies>
+        <!-- Dependência do JavaFX Controls para elementos de UI -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <!-- Dependência do JavaFX FXML para carregamento de views definidas em FXML -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <!-- Dependência Ikonli JavaFX para suporte a ícones -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
             <version>12.3.1</version>
         </dependency>
+        <!-- Dependência Ikonli FontAwesome5 para ícones adicionais -->
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
             <version>12.3.1</version>
         </dependency>
+        <!-- Conector MySQL para conexão com banco de dados MySQL -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+        <!-- HikariCP para gerenciamento de pool de conexões com o banco de dados -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
     </dependencies>
+    
     <build>
         <plugins>
+            <!-- Plugin de compilação Maven configurado para usar Java 11 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -42,6 +74,7 @@
                     <release>11</release>
                 </configuration>
             </plugin>
+            <!-- Plugin Maven para JavaFX que define a classe principal e empacota a aplicação -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
